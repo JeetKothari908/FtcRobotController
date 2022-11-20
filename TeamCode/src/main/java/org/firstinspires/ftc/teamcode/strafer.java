@@ -2,18 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
-@Autonomous(name="AutoNoMouse", group="Autonomous")
-public class color_program extends LinearOpMode {
+@Autonomous(name="strafer", group="Autonomous")
+public class strafer extends LinearOpMode {
 
     // Declare OpMode members.
 //    private final ElapsedTime runtime = new ElapsedTime();
@@ -58,13 +54,12 @@ public class color_program extends LinearOpMode {
     public DcMotor bl;
     public DcMotor br;
     public DcMotor E;
-    public ColorSensor color_sensor;
 
     @Override
     public void runOpMode() {
 
 
-        color_sensor = hardwareMap.colorSensor.get("color_sensor");
+
         fl = hardwareMap.get(DcMotor.class, "FL");
         fr = hardwareMap.get(DcMotor.class, "FR");
         bl = hardwareMap.get(DcMotor.class, "BL");
@@ -85,30 +80,20 @@ public class color_program extends LinearOpMode {
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fl.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // runs the moment robot is initialized
         waitForStart();
         runtime.reset();
 
         while (opModeIsActive()) {
-            moveforward(.91);
-            String color = "";
-            double redblue= color_sensor.red()/color_sensor.blue();
-            double redgreen= color_sensor.red()/color_sensor.green();
-            double bluegreen= color_sensor.blue()/color_sensor.green();
-            if (0.8 < redblue && redblue < 1.2){
-                color = "purple";
-            }
-            if (0.8 < redgreen && redgreen < 1.2){
-                color = "yellow";
-            }
-            if (0.8 < bluegreen && bluegreen < 1.2){
-                color = "turqiouse";
-            }
+            fl.setPower(0.5);
+            fr.setPower(0.5);
+            bl.setPower(0.5);
+            br.setPower(0.5);
         }
     }
 
@@ -163,7 +148,6 @@ public class color_program extends LinearOpMode {
     }
 
 
-
     void moveforward(double meters){
 
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -187,6 +171,7 @@ public class color_program extends LinearOpMode {
         fr.setTargetPosition(0);
 
     }
+
     void move(double X, double Y, double T, double U, double TU, double P){
         // make sure to set motor mode to RUN_TO_POSITION and give it power!
 

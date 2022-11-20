@@ -2,17 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="AutoNoMouse", group="Autonomous")
-public class autonomous1 extends LinearOpMode {
+@Autonomous(name="strafer", group="Autonomous")
+public class mover extends LinearOpMode {
 
     // Declare OpMode members.
 //    private final ElapsedTime runtime = new ElapsedTime();
@@ -93,58 +90,10 @@ public class autonomous1 extends LinearOpMode {
         runtime.reset();
 
         while (opModeIsActive()) {
-
-//For starting on the RIGHT
-
-
-//defining units
-            double driveUnit = 1;
-            double turnUnit = 1;
-            int color = 3;
-            double grabbercloser = 0.29;
-            double grabberopener = 0.12;
-
-//initial movement
-//Slightly extend extender- 1/4th of the way
-            move(0.0,53.0,0.0,driveUnit,turnUnit,1);
-            move(0.0,53.0,0.0,driveUnit,turnUnit,1);
-//SCAN CONE
-//SAVE COLOR
-            if(color == 3)
-            {
-                move(0.0,15.0,90.0,driveUnit,turnUnit,1);
-                move(0.0,-65.0, 0.0, driveUnit,turnUnit, 1);
-                move(40.0,0.0,0.0,driveUnit,turnUnit,1);
-                move(0.0,10.0,0.0,driveUnit,turnUnit,1);
-                //Extender up (low)
-                //Drop cone
-                grabber.setPosition(grabberopener);
-            }
-            else if(color == 2)
-            {
-                move(0.0,0.0,90.0,driveUnit, turnUnit,1);
-                move(40.0,0.0,0.0, driveUnit, turnUnit, 1);
-                move(0.0,10.0,0.0,driveUnit, turnUnit, 1);
-                //Extender up(mid)
-                //Drop cone
-                grabber.setPosition(grabberopener);
-
-            }
-            else
-            {
-                move(0.0,15.0,90.0,driveUnit,turnUnit, 1);
-                move(0.0,65.0,0.0,driveUnit, turnUnit,1);
-                move(40.0,0.0,0.0,driveUnit, turnUnit,1);
-                move(0.0,10.0,0.0,driveUnit, turnUnit, 1);
-                //Extender up (high)
-                //Drop cone
-                grabber.setPosition(grabberopener);
-
-            }
-
-            break;
-
-
+            fl.setPower(0.5);
+            fr.setPower(0.5);
+            bl.setPower(0.5);
+            br.setPower(0.5);
         }
     }
 
