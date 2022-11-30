@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -54,10 +55,14 @@ public class functiontester extends LinearOpMode {
     public DcMotor bl;
     public DcMotor br;
     public DcMotor E;
+    public ColorSensor color_sensor;
     double moveconstant = 1.0;
     double turnconstant = 1.0;
     double strafeconstant = 1.0;
-
+    String color = "";
+    int red = color_sensor.red();
+    int blue = color_sensor.blue();
+    int green = color_sensor.green();
     @Override
     public void runOpMode() {
 
@@ -68,6 +73,7 @@ public class functiontester extends LinearOpMode {
         bl = hardwareMap.get(DcMotor.class, "BL");
         br = hardwareMap.get(DcMotor.class, "BR");
         E = hardwareMap.get(DcMotor.class, "E");
+        color_sensor = hardwareMap.colorSensor.get("color_sensor");
 
         grabber = hardwareMap.get(Servo.class,"grab"); //THE SERVO IS IN PEROCENT, BW/ 1 OR 0. BASELINE IS .5
 
@@ -99,6 +105,9 @@ public class functiontester extends LinearOpMode {
             straferight(0.5);
             turnleft(90);
             turnright(90);
+            colortestor();
+            telemetry.addData("color is", color);
+            telemetry.update();
         }
     }
     void moveforward(double meters){
@@ -196,5 +205,16 @@ public class functiontester extends LinearOpMode {
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+    void colortestor(){
+        if (green > blue && red > blue){
+            color = "yellow";
+        }
+        if (blue > green && red > green){
+            color = "purple";
+        }
+        if (blue > red && green > red){
+            color = "turqoise";
+        }
     }
 }
