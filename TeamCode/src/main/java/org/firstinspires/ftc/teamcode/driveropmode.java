@@ -15,43 +15,9 @@ import com.qualcomm.robotcore.util.Range;
 public class driveropmode extends LinearOpMode {
 
     // Declare OpMode members.
-//    private final ElapsedTime runtime = new ElapsedTime();
-
-
-
-    //               )\         O_._._._A_._._._O         /(
-    //                \`--.___,'=================`.___,--'/
-    //                 \`--._.__                 __._,--'/
-    //                   \  ,. l`~~~~~~~~~~~~~~~'l ,.  /
-    //       __            \||(_)!_!_!_.-._!_!_!(_)||/            __
-    //       \\`-.__        ||_|____!!_|;|_!!____|_||        __,-'//
-    //        \\    `==---='// Declare OpMode members.`=---=='    //
-    /*    /**/private final ElapsedTime runtime = new ElapsedTime();/**/
-    //         \  ,.`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',.  /
-    //           \||  ____,-------._,-------._,-------.____  ||/
-    //            ||\|___!`======="!`======="!`======="!___|/||
-    //            || |---||--------||-| | |-!!--------||---| ||
-    //  __O_____O_ll_lO_____O_____O|| |'|'| ||O_____O_____Ol_ll_O_____O__
-    //  o H o o H o o H o o H o o |-----------| o o H o o H o o H o o H o
-    // ___H_____H_____H_____H____O =========== O____H_____H_____H_____H___
-    //                          /|=============|\
-    //()______()______()______() '==== +-+ ====' ()______()______()______()
-    //||{_}{_}||{_}{_}||{_}{_}/| ===== |_| ===== |\{_}{_}||{_}{_}||{_}{_}||
-    //||      ||      ||     / |==== s(   )s ====| \     ||      ||      ||
-    //======================()  =================  ()======================
-    //----------------------/| ------------------- |\----------------------
-    //                     / |---------------------| \
-    //-'--'--'           ()  '---------------------'  ()
-    //                   /| ------------------------- |\    --'--'--'
-    //       --'--'     / |---------------------------| \    '--'
-    //                ()  |___________________________|  ()           '--'-
-    //  --'-          /| _______________________________  |\
-    // --' gpyy      / |__________________________________| \
-
+    private final ElapsedTime runtime = new ElapsedTime();
 
     public Servo grabber;
-
-    int position = 180;
 
     public DcMotor fl;
     public DcMotor fr;
@@ -61,19 +27,6 @@ public class driveropmode extends LinearOpMode {
     public ColorSensor color_sensor;
 
     boolean holdpos = false;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public void runOpMode() {
@@ -99,10 +52,11 @@ public class driveropmode extends LinearOpMode {
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
+        fl.setDirection(DcMotor.Direction.REVERSE);
+        fr.setDirection(DcMotor.Direction.FORWARD);
+        bl.setDirection(DcMotor.Direction.REVERSE);
+        br.setDirection(DcMotor.Direction.FORWARD);
+
         // runs the moment robot is initialized
         waitForStart();
         runtime.reset();
@@ -121,8 +75,6 @@ public class driveropmode extends LinearOpMode {
             }
             if(gamepad1.left_bumper){grabber.setPosition(0);
             }
-
-
 
             if(gamepad1.b){extend(0);holdpos=true;}
             if(gamepad1.a){extend(1);holdpos=true;}
