@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
-@Autonomous(name="color_testing", group="Autonomous")
+@TeleOp(name="color_testing", group="Driver OP")
 public class color_testor extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

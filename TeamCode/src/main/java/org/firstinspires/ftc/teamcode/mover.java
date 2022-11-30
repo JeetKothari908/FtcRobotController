@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="strafer", group="Autonomous")
+@Autonomous(name="mover", group="Autonomous")
 public class mover extends LinearOpMode {
 
     // Declare OpMode members.
