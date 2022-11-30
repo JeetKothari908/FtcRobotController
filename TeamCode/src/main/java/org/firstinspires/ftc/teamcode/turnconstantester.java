@@ -95,7 +95,7 @@ public class turnconstantester extends LinearOpMode {
             bl.setDirection(DcMotorSimple.Direction.REVERSE);
             br.setDirection(DcMotorSimple.Direction.FORWARD);
             fl.setPower(1.0);
-            fr.setPower(1.0);
+            bl.setPower(1.0);
             sleep(1000);
             fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
