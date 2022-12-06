@@ -2,15 +2,18 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="mover", group="Autonomous")
-public class functiontester extends LinearOpMode {
+@Autonomous(name="leftAuto", group="Autonomous")
+public class leftAuto extends LinearOpMode {
 
     // Declare OpMode members.
 //    private final ElapsedTime runtime = new ElapsedTime();
@@ -46,10 +49,11 @@ public class functiontester extends LinearOpMode {
     //  --'-          /| _______________________________  |\
     // --' gpyy      / |__________________________________| \
 
+
     public Servo grabber;
 
     int position = 180;
-    double constanter = 0.0;
+
     public DcMotor fl;
     public DcMotor fr;
     public DcMotor bl;
@@ -64,19 +68,32 @@ public class functiontester extends LinearOpMode {
     int red = color_sensor.red();
     int blue = color_sensor.blue();
     int green = color_sensor.green();
+    boolean holdpos = false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void runOpMode() {
 
+        fl= hardwareMap.get(DcMotor.class, "FL");
+        fr= hardwareMap.get(DcMotor.class, "FR");
+        bl= hardwareMap.get(DcMotor.class, "BL");
+        br= hardwareMap.get(DcMotor.class, "BR");
 
-
-        fl = hardwareMap.get(DcMotor.class, "FL");
-        fr = hardwareMap.get(DcMotor.class, "FR");s
-        bl = hardwareMap.get(DcMotor.class, "BL");
-        br = hardwareMap.get(DcMotor.class, "BR");
         E = hardwareMap.get(DcMotor.class, "E");
-        color_sensor = hardwareMap.colorSensor.get("color_sensor");
 
-        grabber = hardwareMap.get(Servo.class,"grab"); //THE SERVO IS IN PEROCENT, BW/ 1 OR 0. BASELINE IS .5
+        grabber = hardwareMap.get(Servo.class, "grab");
 
         fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -94,19 +111,63 @@ public class functiontester extends LinearOpMode {
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
-
         // runs the moment robot is initialized
         waitForStart();
         runtime.reset();
-        moveforward(1.0);
-       /* movebackward(0.5);
-        strafeleft(0.5);
-        straferight(0.5);
-        turnleft(90);
-        turnright(90);
-        colortestor();*/
+
+
+        moveforward(0.53);
+
+        //Scan cone code
+        String color = null;
+
+        //differentiation
+        if (green > blue && red > blue){
+            color = "yellow";
+        }
+        if (blue > green && red > green){
+            color = "purple";
+        }
+        if (blue > red && green > red){
+            color = "turqoise";
+        }
+
+        if(color.equals("purple"))
+        {
+            moveforward(0.15);
+            turnRight(90);
+            movebackward(0.65);
+            strafeleft(0.40);
+            moveforward(0.10);
+            //extender to low height
+            //extend(1);
+            //release claw (NEEDS TO BE ADDED)
+        }
+        else if(color.equals("yellow"))
+        {
+            turnRight(90);
+            strafeleft(0.40);
+            moveforward(0.10);
+            //mid extender
+            //extend(2);
+            //release claw (NEEDS TO BE ADDED)
+        }
+        else
+        {
+            moveforward(0.15);
+            turnRight(90);
+            moveforward(0.65);
+            strafeleft(0.40);
+            moveforward(0.10);
+            //high extender
+            //extend(3);
+            //release claw (NEEDS TO BE ADDED)
+        }
+
         while (opModeIsActive()) {}
+
     }
+
     void moveforward(double meters){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -216,7 +277,7 @@ public class functiontester extends LinearOpMode {
         bl.setPower(1.0);
         br.setPower(1.0);
     }
-    void turnright(int degrees){
+    void turnRight(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -231,17 +292,17 @@ public class functiontester extends LinearOpMode {
         br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         int position = (int) (degrees * turnconstant);
         fl.setTargetPosition(position);
-  //      fr.setTargetPosition(position);
+        //      fr.setTargetPosition(position);
         bl.setTargetPosition(position);
 //        br.setTargetPosition(position);
         fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
- //       fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //       fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
- //       br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //       br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         fl.setPower(1.0);
 //        fr.setPower(1.0);
         bl.setPower(1.0);
- //       br.setPower(1.0);
+        //       br.setPower(1.0);
     }
     void turnleft(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -257,17 +318,17 @@ public class functiontester extends LinearOpMode {
         bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         int position = (int) (degrees * turnconstant);
- //       fl.setTargetPosition(position);
+        //       fl.setTargetPosition(position);
         fr.setTargetPosition(position);
-  //      bl.setTargetPosition(position);
+        //      bl.setTargetPosition(position);
         br.setTargetPosition(position);
-  //      fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //      fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-   //     bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //     bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-  //      fl.setPower(1.0);
+        //      fl.setPower(1.0);
         fr.setPower(1.0);
-  //      bl.setPower(1.0);
+        //      bl.setPower(1.0);
         br.setPower(1.0);
     }
     void colortestor(){
