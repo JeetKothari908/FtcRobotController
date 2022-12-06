@@ -56,7 +56,7 @@ public class functiontester extends LinearOpMode {
     public DcMotor br;
     public DcMotor E;
     public ColorSensor color_sensor;
-    double moveconstant = 250.0;
+    double moveconstant = 3000.0;
     double turnconstant = 250.0;
     double strafeconstant = 250.0;
     String color = "";
@@ -97,13 +97,13 @@ public class functiontester extends LinearOpMode {
         // runs the moment robot is initialized
         waitForStart();
         runtime.reset();
-        moveforward(0.5);
-        movebackward(0.5);
+        moveforward(1.0);
+       /* movebackward(0.5);
         strafeleft(0.5);
         straferight(0.5);
         turnleft(90);
         turnright(90);
-        colortestor();
+        colortestor();*/
         while (opModeIsActive()) {}
     }
     void moveforward(double meters){
