@@ -20,6 +20,7 @@ public class constanttester extends LinearOpMode {
         waitForStart();
         DcMotor fl;
         fl = hardwareMap.get(DcMotor.class, "FL");
+        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fl.setDirection(DcMotor.Direction.REVERSE);
         fl.setTargetPosition(1000);
