@@ -99,12 +99,11 @@ public class functiontester extends LinearOpMode {
         waitForStart();
         runtime.reset();
         moveforward(1.0);
-       /* movebackward(0.5);
+        movebackward(0.5);
         strafeleft(0.5);
         straferight(0.5);
         turnleft(90);
         turnright(90);
-        colortestor();*/
         while (opModeIsActive()) {}
     }
     // this is only for dc motors
@@ -196,15 +195,18 @@ public class functiontester extends LinearOpMode {
         settargetpositioner(br, position);
 
     }
-    void colortestor(){
+    String colortestor(){
         if (green > blue && red > blue){
-            color = "yellow";
+            return "yellow";
         }
         if (blue > green && red > green){
-            color = "purple";
+            return "purple";
         }
         if (blue > red && green > red){
-            color = "turqoise";
+            return "turqoise";
+        }
+        else {
+            return "no color, sense again";
         }
     }
 }
