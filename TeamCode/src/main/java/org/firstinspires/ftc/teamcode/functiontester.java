@@ -104,6 +104,12 @@ public class functiontester extends LinearOpMode {
         straferight(0.5);
         turnleft(90);
         turnright(90);
+        moveExtender(0);
+        moveExtender(1);
+        moveExtender(2);
+        moveExtender(3);
+        openclaw();
+        closeclaw();
         while (opModeIsActive()) {}
     }
     // this is only for dc motors
@@ -209,4 +215,25 @@ public class functiontester extends LinearOpMode {
             return "no color, sense again";
         }
     }
+    void moveExtender(int place){
+        if (place == 0){
+            settargetpositioner(E, 0);
+        }
+        if (place == 1){
+            settargetpositioner(E, 997);
+        }
+        if (place == 2){
+            settargetpositioner(E, 1994);
+        }
+        if (place == 3) {
+            settargetpositioner(E, 2990);
+        }
+    }
+    void openclaw(){
+        grabber.setPosition(.295);
+    }
+    void closeclaw(){
+        grabber.setPosition(0.0);
+    }
+
 }
