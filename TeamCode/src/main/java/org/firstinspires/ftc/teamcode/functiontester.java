@@ -55,15 +55,15 @@ public class functiontester extends LinearOpMode {
     public DcMotor bl;
     public DcMotor br;
     public DcMotor E;
-    public ColorSensor color_sensor;
+  //  public ColorSensor color_sensor;
     double moveconstant = 1783; //this is how many targetposition units in a meter
     double motorrotation = 538; // this is how many targetposition units in a rotation
     double turnconstant = 2268; // untested, need to test
     double strafeconstant = 3; //untested, need to test
     String color = "";
-    int red = color_sensor.red();
+   /* int red = color_sensor.red();
     int blue = color_sensor.blue();
-    int green = color_sensor.green();
+    int green = color_sensor.green();*/
     @Override
     public void runOpMode() {
 
@@ -74,7 +74,7 @@ public class functiontester extends LinearOpMode {
         bl = hardwareMap.get(DcMotor.class, "BL");
         br = hardwareMap.get(DcMotor.class, "BR");
         E = hardwareMap.get(DcMotor.class, "E");
-        color_sensor = hardwareMap.colorSensor.get("color_sensor");
+      //  color_sensor = hardwareMap.colorSensor.get("color_sensor");
 
         grabber = hardwareMap.get(Servo.class,"grab"); //THE SERVO IS IN PEROCENT, BW/ 1 OR 0. BASELINE IS .5
 
@@ -99,7 +99,7 @@ public class functiontester extends LinearOpMode {
         waitForStart();
         runtime.reset();
         moveforward(1.0);
-        movebackward(0.5);
+  /*      movebackward(0.5);
         strafeleft(0.5);
         straferight(0.5);
         turnleft(90);
@@ -109,7 +109,7 @@ public class functiontester extends LinearOpMode {
         moveExtender(2);
         moveExtender(3);
         openclaw();
-        closeclaw();
+        closeclaw();*/
         while (opModeIsActive()) {}
     }
     // this is only for dc motors
@@ -123,69 +123,69 @@ public class functiontester extends LinearOpMode {
 
     void moveforward(double meters){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        //fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        //bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
 
         int position = (int) (meters * moveconstant);
 
         settargetpositioner(fl, position);
-        settargetpositioner(fr, position);
-        settargetpositioner(bl, position);
+       // settargetpositioner(fr, position);
+        //settargetpositioner(bl, position);
         settargetpositioner(br, position);
 
     }
     void movebackward(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
-        bl.setDirection(DcMotorSimple.Direction.FORWARD);
+        //bl.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
 
         int position = (int) (meters * moveconstant);
 
         settargetpositioner(fl, position);
-        settargetpositioner(fr, position);
-        settargetpositioner(bl, position);
         settargetpositioner(br, position);
+        //settargetpositioner(bl, position);
+        //settargetpositioner(br, position);
 
     }
     void strafeleft(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
-        fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        //fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        //bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
 
         int position = (int) (meters * strafeconstant);
 
         settargetpositioner(fl, position);
-     //   settargetpositioner(fr, position);
-        settargetpositioner(bl, position);
-     //   settargetpositioner(br, position);
+        //settargetpositioner(fr, position);
+        //settargetpositioner(bl, position);
+        settargetpositioner(br, position);
 
     }
     void straferight(double meters){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.REVERSE);
-        bl.setDirection(DcMotorSimple.Direction.FORWARD);
+        //fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        //bl.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
 
         int position = (int) (meters * strafeconstant);
         settargetpositioner(fl, position);
-        settargetpositioner(fr, position);
-        settargetpositioner(bl, position);
+        //settargetpositioner(fr, position);
+        //settargetpositioner(bl, position);
         settargetpositioner(br, position);
 
     }
     void turnright(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        //fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        //bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
         int position = (int) (degrees * turnconstant);
         settargetpositioner(fl, position);
 //        settargetpositioner(fr, position);
-        settargetpositioner(bl, position);
-  //      settargetpositioner(br, position);
+        //settargetpositioner(bl, position);
+       // settargetpositioner(br, position);
 
     }
     void turnleft(int degrees){
@@ -196,12 +196,12 @@ public class functiontester extends LinearOpMode {
 
         int position = (int) (degrees * turnconstant);
   //      settargetpositioner(fl, position);
-        settargetpositioner(fr, position);
+        //settargetpositioner(fr, position);
    //     settargetpositioner(bl, position);
         settargetpositioner(br, position);
 
     }
-    String colortestor(){
+   /* String colortestor(){
         if (green > blue && red > blue){
             return "yellow";
         }
@@ -213,8 +213,8 @@ public class functiontester extends LinearOpMode {
         }
         else {
             return "no color, sense again";
-        }
-    }
+        }*/
+
     void moveExtender(int place){
         if (place == 0){
             settargetpositioner(E, 0);
