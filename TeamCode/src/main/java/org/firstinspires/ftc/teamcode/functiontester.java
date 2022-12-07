@@ -70,7 +70,7 @@ public class functiontester extends LinearOpMode {
 
 
         fl = hardwareMap.get(DcMotor.class, "FL");
-        fr = hardwareMap.get(DcMotor.class, "FR");s
+        fr = hardwareMap.get(DcMotor.class, "FR");
         bl = hardwareMap.get(DcMotor.class, "BL");
         br = hardwareMap.get(DcMotor.class, "BR");
         E = hardwareMap.get(DcMotor.class, "E");

@@ -46,7 +46,7 @@ public class thinger extends LinearOpMode {
 ////        try {
 ////            Thread.sleep(10000);
 ////        } catch (InterruptedException e) {
-////            e.printStackTrace();
+////            e.printStackTrace();  dasdfsa
 ////        }
 ////        r.carousel.setPower(0);
 //
