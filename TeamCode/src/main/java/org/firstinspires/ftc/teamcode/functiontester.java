@@ -56,10 +56,10 @@ public class functiontester extends LinearOpMode {
     public DcMotor br;
     public DcMotor E;
     public ColorSensor color_sensor;
-    double moveconstant = 1783.0;
-    double motorrotation = 537.7;
-    double turnconstant = 250.0;
-    double strafeconstant = 250.0;
+    double moveconstant = 1783; //this is how many targetposition units in a meter
+    double motorrotation = 538; // this is how many targetposition units in a rotation
+    double turnconstant = 2268; // untested, need to test
+    double strafeconstant = 3; //untested, need to test
     String color = "";
     int red = color_sensor.red();
     int blue = color_sensor.blue();
@@ -99,40 +99,40 @@ public class functiontester extends LinearOpMode {
         waitForStart();
         runtime.reset();
         moveforward(1.0);
-       /* movebackward(0.5);
+        movebackward(0.5);
         strafeleft(0.5);
         straferight(0.5);
         turnleft(90);
         turnright(90);
-        colortestor();*/
+        moveExtender(0);
+        moveExtender(1);
+        moveExtender(2);
+        moveExtender(3);
+        openclaw();
+        closeclaw();
         while (opModeIsActive()) {}
     }
+    // this is only for dc motors
+    void settargetpositioner(DcMotor motor, int position){
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor.setTargetPosition(position);
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor.setPower(1.0);
+    }
+
     void moveforward(double meters){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         int position = (int) (meters * moveconstant);
-        fl.setTargetPosition(position);
-        fr.setTargetPosition(position);
-        bl.setTargetPosition(position);
-        br.setTargetPosition(position);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setPower(1.0);
-        fr.setPower(1.0);
-        bl.setPower(1.0);
-        br.setPower(1.0);
+
+        settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
 
     }
     void movebackward(double meters){
@@ -140,145 +140,100 @@ public class functiontester extends LinearOpMode {
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         int position = (int) (meters * moveconstant);
-        fl.setTargetPosition(position);
-        fr.setTargetPosition(position);
-        bl.setTargetPosition(position);
-        br.setTargetPosition(position);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setPower(1.0);
-        fr.setPower(1.0);
-        bl.setPower(1.0);
-        br.setPower(1.0);
+
+        settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+
     }
     void strafeleft(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         int position = (int) (meters * strafeconstant);
-        fl.setTargetPosition(position);
-        fr.setTargetPosition(position);
-        bl.setTargetPosition(position);
-        br.setTargetPosition(position);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setPower(1.0);
-        fr.setPower(1.0);
-        bl.setPower(1.0);
-        br.setPower(1.0);
+
+        settargetpositioner(fl, position);
+     //   settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+     //   settargetpositioner(br, position);
+
     }
     void straferight(double meters){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         int position = (int) (meters * strafeconstant);
-        fl.setTargetPosition(position);
-        fr.setTargetPosition(position);
-        bl.setTargetPosition(position);
-        br.setTargetPosition(position);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setPower(1.0);
-        fr.setPower(1.0);
-        bl.setPower(1.0);
-        br.setPower(1.0);
+        settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+
     }
     void turnright(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         int position = (int) (degrees * turnconstant);
-        fl.setTargetPosition(position);
-  //      fr.setTargetPosition(position);
-        bl.setTargetPosition(position);
-//        br.setTargetPosition(position);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
- //       fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
- //       br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setPower(1.0);
-//        fr.setPower(1.0);
-        bl.setPower(1.0);
- //       br.setPower(1.0);
+        settargetpositioner(fl, position);
+//        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+  //      settargetpositioner(br, position);
+
     }
     void turnleft(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         int position = (int) (degrees * turnconstant);
- //       fl.setTargetPosition(position);
-        fr.setTargetPosition(position);
-  //      bl.setTargetPosition(position);
-        br.setTargetPosition(position);
-  //      fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-   //     bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-  //      fl.setPower(1.0);
-        fr.setPower(1.0);
-  //      bl.setPower(1.0);
-        br.setPower(1.0);
+  //      settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+   //     settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+
     }
-    void colortestor(){
+    String colortestor(){
         if (green > blue && red > blue){
-            color = "yellow";
+            return "yellow";
         }
         if (blue > green && red > green){
-            color = "purple";
+            return "purple";
         }
         if (blue > red && green > red){
-            color = "turqoise";
+            return "turqoise";
+        }
+        else {
+            return "no color, sense again";
         }
     }
+    void moveExtender(int place){
+        if (place == 0){
+            settargetpositioner(E, 0);
+        }
+        if (place == 1){
+            settargetpositioner(E, 997);
+        }
+        if (place == 2){
+            settargetpositioner(E, 1994);
+        }
+        if (place == 3) {
+            settargetpositioner(E, 2990);
+        }
+    }
+    void openclaw(){
+        grabber.setPosition(.295);
+    }
+    void closeclaw(){
+        grabber.setPosition(0.0);
+    }
+
 }

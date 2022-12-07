@@ -23,7 +23,7 @@ public class constanttester extends LinearOpMode {
         fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fl.setDirection(DcMotor.Direction.REVERSE);
-        fl.setTargetPosition(1000);
+        fl.setTargetPosition(538);
         fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         fl.setPower(0.5);
         while(opModeIsActive()){}
