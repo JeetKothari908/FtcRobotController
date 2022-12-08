@@ -1,9 +1,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Color;
-
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -17,28 +14,25 @@ public class Robot {
     // comes with 4g of ram and 8g of storage, crazy!
 
     // motors
-    public DcMotor fl;
-    public DcMotor fr;
-    public DcMotor bl;
-    public DcMotor br;
-    public ColorSensor color_sensor;
+    public DcMotor FL;
+    public DcMotor FR;
+    public DcMotor BL;
+    public DcMotor BR;
+
     // autonomous strafe constants (trial & error so that units are meters in autonomous)
-    double moveconstant = 1783; //this is how many targetposition units in a meter
-    double motorrotation = 538; // this is how many targetposition units in a rotation
-    double turnconstant = 2268; // untested, need to test
-    double strafeconstant = 3; //untested, need to test
-    int red = color_sensor.red();
-    int blue = color_sensor.blue();
-    int green = color_sensor.green();
+    public double AYmult;
+    public double AXmult;
+    public double ATmult;
+
     // driverop constants
-    public double DXmult=.5;
-    public double DYmult=.5;
-    public double DTmult=.5;
+    public double DXmult = .5;
+    public double DYmult = .5;
+    public double DTmult = .5;
 
     // for extender
     public DcMotor extender;
     public double extenderCmMultiple;
-
+    public double extendSpeed;
     // for arm
     public DcMotor shoulder;    // unused currently, may be implemented in future years
     public DcMotor elbow;
@@ -54,72 +48,57 @@ public class Robot {
 
     public Gamepad driverGamepad;
 
-    public Robot(Gamepad g, HardwareMap h, String configuration){
+    public Robot(Gamepad g, HardwareMap h, String configuration) {
         driverGamepad = g;
 
         // initializes motors
         initMotor(h);
 
-        switch(configuration){
+        switch (configuration) {
             case "basic mecanum":
                 // figure this out next year
                 break;
             case "boGilda":
                 //TODO trial&error this
-                fl.setDirection(DcMotor.Direction.REVERSE);
-                fr.setDirection(DcMotor.Direction.FORWARD);
-                bl.setDirection(DcMotor.Direction.REVERSE);
-                br.setDirection(DcMotor.Direction.FORWARD);
+                FL.setDirection(DcMotor.Direction.REVERSE);
+                FR.setDirection(DcMotor.Direction.FORWARD);
+                BL.setDirection(DcMotor.Direction.REVERSE);
+                BR.setDirection(DcMotor.Direction.FORWARD);
                 break;
         }
-
-
-
-
-
-
-
     }
 
+    void initMotor(HardwareMap hardwareMap) {
+        FL = hardwareMap.get(DcMotor.class, "FL");
+        FR = hardwareMap.get(DcMotor.class, "FR");
+        BL = hardwareMap.get(DcMotor.class, "BL");
+        BR = hardwareMap.get(DcMotor.class, "BR");
 
-
-
-
-
-
-
-
-
-    void initMotor(HardwareMap hardwareMap){
-        fl = hardwareMap.get(DcMotor.class, "FL");
-        fr = hardwareMap.get(DcMotor.class, "FR");
-        bl = hardwareMap.get(DcMotor.class, "BL");
-        br = hardwareMap.get(DcMotor.class, "BR");
-        color_sensor = hardwareMap.colorSensor.get("color_sensor");
-
-        if(usesArm){
+        if (usesArm) {
             //figure out with arm
         }
-        if(usesExt){
-            extender=hardwareMap.get(DcMotor.class, "EXT");
+        if (usesExt) {
+            extender = hardwareMap.get(DcMotor.class, "EXT");
         }
     }
 
     //driver controlled time
-    public void driverMove(){
+    public void driverMove() {
         //units defined for readability
-        double horizontal = driverGamepad.left_stick_x*DXmult;   // this works so dont question it
-        double vertical = driverGamepad.left_stick_y*DYmult;
-        double turn = driverGamepad.right_stick_x*DTmult;
-
+        double horizontal = driverGamepad.left_stick_x * DXmult;   // this works so dont question it
+        double vertical = driverGamepad.left_stick_y * DYmult;
+        double turn = driverGamepad.right_stick_x * DTmult;
+        double extenderPosCM = extender.getCurrentPosition() * extenderCmMultiple + driverGamepad.right_stick_y * extenderCmMultiple * extendSpeed;
         //the god code. we do not change this. too much work to trial&error
-        fl.setPower(Range.clip((vertical + horizontal - turn), -1, 1));
-        fr.setPower(Range.clip((vertical - horizontal + turn), -1, 1));
-        bl.setPower(Range.clip((vertical - horizontal - turn), -1, 1));
-        br.setPower(Range.clip((vertical + horizontal + turn), -1, 1));
+        FL.setPower(Range.clip((vertical + horizontal - turn), -1, 1));
+        FR.setPower(Range.clip((vertical - horizontal + turn), -1, 1));
+        BL.setPower(Range.clip((vertical - horizontal - turn), -1, 1));
+        BR.setPower(Range.clip((vertical + horizontal + turn), -1, 1));
+
+        extender.setTargetPosition((int) (extenderPosCM / extenderPosCM));
     }
 
-    public void runAutonomous(){
+    public void runAutonomous1() {
 
 
         //                                         //
@@ -130,127 +109,63 @@ public class Robot {
 
     }
 
-    void settargetpositioner(DcMotor motor, int position){
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor.setTargetPosition(position);
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(1.0);
-    }
+    public void runAutonomous2() {
 
-    void moveforward(double meters){
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        //fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        //bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        int position = (int) (meters * moveconstant);
+        //                                         //
+        //         INSERT AUTONOMOUS HERE          //
+        //(in terms of the functions defined below)//
+        //                                         //
 
-        settargetpositioner(fl, position);
-        // settargetpositioner(fr, position);
-        //settargetpositioner(bl, position);
-        settargetpositioner(br, position);
 
     }
-    void movebackward(double meters){
-        fl.setDirection(DcMotorSimple.Direction.FORWARD);
-        fr.setDirection(DcMotorSimple.Direction.REVERSE);
-        //bl.setDirection(DcMotorSimple.Direction.FORWARD);
-        br.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        int position = (int) (meters * moveconstant);
-
-        settargetpositioner(fl, position);
-        settargetpositioner(br, position);
-        //settargetpositioner(bl, position);
-        //settargetpositioner(br, position);
-
+    public void autoMove(int revx, int revy) {
+        FL.setTargetPosition((int) (FL.getCurrentPosition() + Range.clip((revx * AXmult + revy * AYmult), -1, 1)));
+        FR.setTargetPosition((int) (FR.getCurrentPosition() + Range.clip((revx * AXmult - revy * AYmult), -1, 1)));
+        BL.setTargetPosition((int) (BL.getCurrentPosition() + Range.clip((revx * AXmult - revy * AYmult), -1, 1)));
+        BR.setTargetPosition((int) (BR.getCurrentPosition() + Range.clip((revx * AXmult + revy * AYmult), -1, 1)));
     }
-    void strafeleft(double meters){
-        fl.setDirection(DcMotorSimple.Direction.FORWARD);
-        //fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        //bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        int position = (int) (meters * strafeconstant);
-
-        settargetpositioner(fl, position);
-        //settargetpositioner(fr, position);
-        //settargetpositioner(bl, position);
-        settargetpositioner(br, position);
-
+    public void autoTurn(double deg) {
+        FL.setTargetPosition(FL.getCurrentPosition() + Range.clip((int) (-deg * ATmult), -1, 1));
+        FR.setTargetPosition(FR.getCurrentPosition() + Range.clip((int) (deg * ATmult), -1, 1));
+        BL.setTargetPosition(BL.getCurrentPosition() + Range.clip((int) (-deg * ATmult), -1, 1));
+        BR.setTargetPosition(BR.getCurrentPosition() + Range.clip((int) (deg * ATmult), -1, 1));
     }
-    void straferight(double meters){
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        //fr.setDirection(DcMotorSimple.Direction.REVERSE);
-        //bl.setDirection(DcMotorSimple.Direction.FORWARD);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        int position = (int) (meters * strafeconstant);
-        settargetpositioner(fl, position);
-        //settargetpositioner(fr, position);
-        //settargetpositioner(bl, position);
-        settargetpositioner(br, position);
+    public void extender(double CM) {
+        extender.setTargetPosition((int) (CM * extenderCmMultiple));
+        extender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extender.setPower(1);
+    }
 
+    public void openClaw() {
+        claw.setPosition(clawOpenPos);
     }
-    void turnright(int degrees){
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        //fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        //bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
-        int position = (int) (degrees * turnconstant);
-        settargetpositioner(fl, position);
-//        settargetpositioner(fr, position);
-        //settargetpositioner(bl, position);
-        // settargetpositioner(br, position);
 
+    public void closeClaw() {
+        claw.setPosition(clawClosePos);
     }
-    void turnleft(int degrees){
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        int position = (int) (degrees * turnconstant);
-        //      settargetpositioner(fl, position);
-        //settargetpositioner(fr, position);
-        //     settargetpositioner(bl, position);
-        settargetpositioner(br, position);
+    public void motorModeReset() {
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
 
+    public void motorModeEncoder() {
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    String colortestor(){
-        if (green > blue && red > blue){
-            return "yellow";
-        }
-        if (blue > green && red > green){
-            return "purple";
-        }
-        if (blue > red && green > red){
-            return "turqoise";
-        }
-        else {
-            return "no color, sense again";
-        }
-    }
-    void moveExtender(int place){
-        if (place == 0){
-            settargetpositioner(extender, 0);
-        }
-        if (place == 1){
-            settargetpositioner(extender, 997);
-        }
-        if (place == 2){
-            settargetpositioner(extender, 1994);
-        }
-        if (place == 3) {
-            settargetpositioner(extender, 2990);
-        }
-    }
-    void openclaw(){
-        claw.setPosition(.295);
-    }
-    void closeclaw(){
-        claw.setPosition(0.0);
+
+    public void motorModePosition() {
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }
-
