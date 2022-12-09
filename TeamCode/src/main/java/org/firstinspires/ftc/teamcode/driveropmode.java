@@ -71,9 +71,9 @@ public class driveropmode extends LinearOpMode {
 
             move();
 
-            if(gamepad1.right_bumper){ grabber.setPosition(.295);
+            if(gamepad1.right_trigger>0.5){ grabber.setPosition(.295);
             }
-            if(gamepad1.left_bumper){grabber.setPosition(0);
+            if(gamepad1.left_trigger > 0.5){grabber.setPosition(0);
             }
 
             if(gamepad1.b){extend(0);holdpos=true;}
@@ -89,7 +89,7 @@ public class driveropmode extends LinearOpMode {
             telemetry.addData("fr",fr.getPower());
             telemetry.addData("bl",bl.getPower());
             telemetry.addData("br",br.getPower());
-
+            telemetry.addData("e", E.getCurrentPosition());
             telemetry.update();
         }
     }
@@ -125,7 +125,7 @@ public class driveropmode extends LinearOpMode {
 
                     break;
                 case 2:
-                    E.setTargetPosition(1994);
+                    E.setTargetPosition(2171);
                     E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     E.setPower(1);
 
@@ -141,8 +141,8 @@ public class driveropmode extends LinearOpMode {
     }
 
     void move(){
-        double horizontal = gamepad1.left_stick_x*.5;   // this works so dont question it
-        double vertical = gamepad1.left_stick_y*.5;
+        double horizontal = -gamepad1.left_stick_x*.5;   // this works so dont question it
+        double vertical = -gamepad1.left_stick_y*.5;
         double turn = -gamepad1.right_stick_x*2/3;
       //  E.setPower(gamepad1.left_stick_y);
         fl.setPower(Range.clip((vertical + horizontal + turn), -1, 1));
