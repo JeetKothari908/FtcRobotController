@@ -147,7 +147,7 @@ public class driveropmode extends LinearOpMode {
 
     void move(){
         double horizontal = -gamepad1.left_stick_x*.5;   // this works so dont question it
-        double vertical = -gamepad1.left_stick_y*.5;
+        double vertical = gamepad1.left_stick_y*.5;
         double turn = -gamepad1.right_stick_x*2/3;
       //  E.setPower(gamepad1.left_stick_y);
         fl.setPower(Range.clip((vertical + horizontal + turn), -1, 1));
