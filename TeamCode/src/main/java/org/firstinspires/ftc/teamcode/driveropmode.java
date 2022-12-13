@@ -69,9 +69,9 @@ public class driveropmode extends LinearOpMode {
 
             move();
 
-            if(gamepad1.right_bumper){ grabber.setPosition(.295);
+            if(gamepad1.right_trigger > 0.5){ grabber.setPosition(.295);
             }
-            if(gamepad1.left_bumper){grabber.setPosition(0);
+            if(gamepad1.left_trigger > 0.5){grabber.setPosition(0);
             }
 
             if(gamepad1.b){extend(0);}
