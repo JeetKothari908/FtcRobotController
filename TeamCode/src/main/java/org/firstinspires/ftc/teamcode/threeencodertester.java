@@ -99,13 +99,13 @@ public class threeencodertester extends LinearOpMode {
         waitForStart();
         runtime.reset();
         moveforward(.25);
-
+/*
         moveExtender(0);
         moveExtender(1);
         moveExtender(2);
         moveExtender(3);
         openclaw();
-        closeclaw();
+        closeclaw();*/
         while (opModeIsActive()) {}
     }
     // this is only for dc motors
