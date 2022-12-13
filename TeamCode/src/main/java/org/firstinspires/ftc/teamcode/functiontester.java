@@ -56,10 +56,10 @@ public class functiontester extends LinearOpMode {
     public DcMotor br;
     public DcMotor E;
   //  public ColorSensor color_sensor;
-    double moveconstant = 1783; //WORKS
+    double moveconstant = 1783 * (2/2.05); //WORKS
     double motorrotation = 538; //WORKS
-    double turnconstant = 11.75; // per degree, so its rly small
-    double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95); //untested, need to test
+    double turnconstant = 12.05; // per degree, so its rly small
+    double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05); //untested, need to test
     String color = "";
    /* int red = color_sensor.red();
     int blue = color_sensor.blue();
@@ -122,6 +122,7 @@ public class functiontester extends LinearOpMode {
     }
 
     void moveforward(double meters){
+
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
