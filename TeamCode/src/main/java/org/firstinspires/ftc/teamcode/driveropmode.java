@@ -26,8 +26,6 @@ public class driveropmode extends LinearOpMode {
     public DcMotor E;
     public ColorSensor color_sensor;
 
-    boolean holdpos = false;
-
     @Override
     public void runOpMode() {
 
@@ -71,29 +69,21 @@ public class driveropmode extends LinearOpMode {
 
             move();
 
-            if(gamepad1.right_trigger>0.5){ grabber.setPosition(.295);
+            if(gamepad1.right_bumper){ grabber.setPosition(.295);
             }
-            if(gamepad1.left_trigger > 0.5){grabber.setPosition(0);
-            }
-
-            if(gamepad1.b){extend(0);holdpos=true;}
-            if(gamepad1.a){extend(1);holdpos=true;}
-            if(gamepad1.x){extend(2);holdpos=true;}
-            if(gamepad1.y){extend(  3);holdpos=true;}
-            if(gamepad1.right_bumper){
-                E.setTargetPosition(500);
-                E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                E.setPower(1);
+            if(gamepad1.left_bumper){grabber.setPosition(0);
             }
 
-            if(!(gamepad1.a|| gamepad1.b|| gamepad1.x||gamepad1.y)){}else
+            if(gamepad1.b){extend(0);}
+            if(gamepad1.a){extend(1);}
+            if(gamepad1.x){extend(2);}
+            if(gamepad1.y){extend(  3);}
 
-            {holdpos=false; E.setPower(0);E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);}
             telemetry.addData("fl",fl.getPower());
             telemetry.addData("fr",fr.getPower());
             telemetry.addData("bl",bl.getPower());
             telemetry.addData("br",br.getPower());
-            telemetry.addData("e", E.getCurrentPosition());
+
             telemetry.update();
         }
     }
@@ -114,7 +104,6 @@ public class driveropmode extends LinearOpMode {
 
     void extend(int position) {
 
-        if(holdpos){E.setPower(1);} else{
             switch (position) {
                 case 0:
                     E.setTargetPosition(0);
@@ -129,7 +118,7 @@ public class driveropmode extends LinearOpMode {
 
                     break;
                 case 2:
-                    E.setTargetPosition(2048);
+                    E.setTargetPosition(1994);
                     E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     E.setPower(1);
 
@@ -141,9 +130,9 @@ public class driveropmode extends LinearOpMode {
 
 
                     break;
-
-            }}
+            }
     }
+
 
     void move(){
         double horizontal = -gamepad1.left_stick_x*.5;   // this works so dont question it
