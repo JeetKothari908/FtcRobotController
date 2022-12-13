@@ -80,7 +80,11 @@ public class driveropmode extends LinearOpMode {
             if(gamepad1.a){extend(1);holdpos=true;}
             if(gamepad1.x){extend(2);holdpos=true;}
             if(gamepad1.y){extend(  3);holdpos=true;}
-
+            if(gamepad1.right_bumper){
+                E.setTargetPosition(500);
+                E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                E.setPower(1);
+            }
 
             if(!(gamepad1.a|| gamepad1.b|| gamepad1.x||gamepad1.y)){}else
 
@@ -125,7 +129,7 @@ public class driveropmode extends LinearOpMode {
 
                     break;
                 case 2:
-                    E.setTargetPosition(2171);
+                    E.setTargetPosition(2048);
                     E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     E.setPower(1);
 
@@ -137,6 +141,7 @@ public class driveropmode extends LinearOpMode {
 
 
                     break;
+
             }}
     }
 

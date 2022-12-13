@@ -56,10 +56,10 @@ public class functiontester extends LinearOpMode {
     public DcMotor br;
     public DcMotor E;
   //  public ColorSensor color_sensor;
-    double moveconstant = 1783; //this is how many targetposition units in a meter
-    double motorrotation = 538; // this is how many targetposition units in a rotation
-    double turnconstant = 2268; // untested, need to test
-    double strafeconstant = 3; //untested, need to test
+    double moveconstant = -1783; //this is how many targetposition units in a meter
+    double motorrotation = -538; // this is how many targetposition units in a rotation
+    double turnconstant = -2268; // untested, need to test
+    double strafeconstant = -300; //untested, need to test
     String color = "";
    /* int red = color_sensor.red();
     int blue = color_sensor.blue();
@@ -76,7 +76,7 @@ public class functiontester extends LinearOpMode {
         E = hardwareMap.get(DcMotor.class, "E");
       //  color_sensor = hardwareMap.colorSensor.get("color_sensor");
 
-        grabber = hardwareMap.get(Servo.class,"grab"); //THE SERVO IS IN PEROCENT, BW/ 1 OR 0. BASELINE IS .5
+        grabber = hardwareMap.get(Servo.class,"grabber"); //THE SERVO IS IN PEROCENT, BW/ 1 OR 0. BASELINE IS .5
 
         fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
