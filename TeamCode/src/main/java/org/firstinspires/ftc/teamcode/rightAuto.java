@@ -152,15 +152,7 @@ public class rightAuto extends LinearOpMode {
         //Scan cone code
 
         //differentiation
-        if (green > blue && red > blue){
-            color = "yellow";
-        }
-        if (blue > green && red > green){
-            color = "purple";
-        }
-        if (blue > red && green > red){
-            color = "turqoise";
-        }
+        color = colortestor();
 
         if(color.equals("turqoise"))
         {

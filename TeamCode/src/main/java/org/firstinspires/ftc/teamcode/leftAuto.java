@@ -122,15 +122,7 @@ public class leftAuto extends LinearOpMode {
         String color = null;
 
         //differentiation
-        if (green > blue && red > blue){
-            color = "yellow";
-        }
-        if (blue > green && red > green){
-            color = "purple";
-        }
-        if (blue > red && green > red){
-            color = "turqoise";
-        }
+        color = colortestor();
 
         if(color.equals("purple"))
         {
