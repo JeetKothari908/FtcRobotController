@@ -98,18 +98,7 @@ public class functiontester extends LinearOpMode {
         // runs the moment robot is initialized
         waitForStart();
         runtime.reset();
-        turnleft(360);
- /*       moveforward(0.4);
-        strafeleft(0.5);
-        strafeleft(0.5);
-        turnleft(90);
-        turnright(90);
-        moveExtender(0);
-        moveExtender(1);
-        moveExtender(2);
-        moveExtender(3);
-        openclaw();
-        closeclaw();*/
+        moveforward(3);
         while (opModeIsActive()) {}
     }
     // this is only for dc motors

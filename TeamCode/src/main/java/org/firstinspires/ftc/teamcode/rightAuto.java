@@ -60,10 +60,10 @@ public class rightAuto extends LinearOpMode {
     public DcMotor br;
     public DcMotor E;
     public ColorSensor color_sensor;
-    double moveconstant = 1783.0;
-    double motorrotation = 537.7;
-    double turnconstant = 250.0;
-    double strafeconstant = 250.0;
+    double moveconstant = 1783 * (2/2.05); //WORKS
+    double motorrotation = 538; //WORKS
+    double turnconstant = 12.05; // per degree, so its rly small
+    double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05); //untested, need to test
     String color = "";
     int red = color_sensor.red();
     int blue = color_sensor.blue();
@@ -165,34 +165,30 @@ public class rightAuto extends LinearOpMode {
         if(color.equals("turqoise"))
         {
             moveforward(0.15);
-            turnLeft(90);
+            turnleft(90);
             movebackward(0.65);
             straferight(0.40);
             moveforward(0.10);
-            //low extender
-            //extend(1);
-            //release claw (NEEDS TO BE ADDED)
-
+            moveExtender(1);
+            openclaw();
         }
         else if(color.equals("yellow"))
         {
-            turnLeft(90);
+            turnleft(90);
             strafeleft(0.40);
             moveforward(0.10);
-            //mid extender
-            //extend(2);
-            //release claw (NEEDS TO BE ADDED)
+            moveExtender(2);
+            openclaw();
         }
         else
         {
             moveforward(0.15);
-            turnLeft(90);
+            turnleft(90);
             moveforward(0.65);
             straferight(0.40);
             moveforward(0.10);
-            //extender to low height
-            //extend(1);
-            //release claw (NEEDS TO BE ADDED)
+            moveExtender(1);
+            openclaw();
         }
 
 
@@ -200,32 +196,27 @@ public class rightAuto extends LinearOpMode {
 
     }
 
+    void settargetpositioner(DcMotor motor, int position){
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor.setTargetPosition(position);
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor.setPower(1.0);
+    }
+
     void moveforward(double meters){
+
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        int position = (int) (meters * moveconstant);
-        fl.setTargetPosition(position);
-        fr.setTargetPosition(position);
-        bl.setTargetPosition(position);
-        br.setTargetPosition(position);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setPower(1.0);
-        fr.setPower(1.0);
-        bl.setPower(1.0);
-        br.setPower(1.0);
+
+        int position = (int) (meters * moveconstant)*-1;
+
+        settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
 
     }
     void movebackward(double meters){
@@ -233,145 +224,98 @@ public class rightAuto extends LinearOpMode {
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        int position = (int) (meters * moveconstant);
-        fl.setTargetPosition(position);
-        fr.setTargetPosition(position);
-        bl.setTargetPosition(position);
-        br.setTargetPosition(position);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setPower(1.0);
-        fr.setPower(1.0);
-        bl.setPower(1.0);
-        br.setPower(1.0);
+
+        int position = (int) (meters * moveconstant)*-1;
+
+        settargetpositioner(fl, position);
+        settargetpositioner(br, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+
     }
     void strafeleft(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        int position = (int) (meters * strafeconstant);
-        fl.setTargetPosition(position);
-        fr.setTargetPosition(position);
-        bl.setTargetPosition(position);
-        br.setTargetPosition(position);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setPower(1.0);
-        fr.setPower(1.0);
-        bl.setPower(1.0);
-        br.setPower(1.0);
+
+        int position = (int) (meters * strafeconstant)*-1;
+
+        settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+
     }
     void straferight(double meters){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        int position = (int) (meters * strafeconstant);
-        fl.setTargetPosition(position);
-        fr.setTargetPosition(position);
-        bl.setTargetPosition(position);
-        br.setTargetPosition(position);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setPower(1.0);
-        fr.setPower(1.0);
-        bl.setPower(1.0);
-        br.setPower(1.0);
+
+        int position = (int) (meters * strafeconstant)*-1;
+        settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+
     }
-    void turnRight(int degrees){
+    void turnright(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        int position = (int) (degrees * turnconstant);
-        fl.setTargetPosition(position);
-        //      fr.setTargetPosition(position);
-        bl.setTargetPosition(position);
-//        br.setTargetPosition(position);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //       fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //       br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setPower(1.0);
-//        fr.setPower(1.0);
-        bl.setPower(1.0);
-        //       br.setPower(1.0);
+        int position = (int) (degrees * turnconstant)*-1;
+        settargetpositioner(fl, -position);
+        settargetpositioner(bl, -position);
+        settargetpositioner(br, position);
+        settargetpositioner(fr, position);
     }
-    void turnLeft(int degrees){
+    void turnleft(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        int position = (int) (degrees * turnconstant);
-        //       fl.setTargetPosition(position);
-        fr.setTargetPosition(position);
-        //      bl.setTargetPosition(position);
-        br.setTargetPosition(position);
-        //      fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //     bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //      fl.setPower(1.0);
-        fr.setPower(1.0);
-        //      bl.setPower(1.0);
-        br.setPower(1.0);
+
+        int position = (int) (degrees * turnconstant)*-1;
+        settargetpositioner(fl, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, -position);
+        settargetpositioner(fr, -position);
+
     }
-    void colortestor(){
+/*    String colortestor(){
         if (green > blue && red > blue){
-            color = "yellow";
+            return "yellow";
         }
         if (blue > green && red > green){
-            color = "purple";
+            return "purple";
         }
         if (blue > red && green > red){
-            color = "turqoise";
+            return "turqoise";
         }
+        else {
+            return "no color, sense again";
+        }*/
+
+    void moveExtender(int place){
+        if (place == 0){
+            settargetpositioner(E, 0);
+        }
+        if (place == 1){
+            settargetpositioner(E, 997);
+        }
+        if (place == 2){
+            settargetpositioner(E, 1994);
+        }
+        if (place == 3) {
+            settargetpositioner(E, 2990);
+        }
+    }
+    void openclaw(){
+        grabber.setPosition(.295);
+    }
+    void closeclaw(){
+        grabber.setPosition(0.0);
     }
 }
