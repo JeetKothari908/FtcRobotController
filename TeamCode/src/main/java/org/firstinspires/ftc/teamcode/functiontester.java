@@ -55,15 +55,15 @@ public class functiontester extends LinearOpMode {
     public DcMotor bl;
     public DcMotor br;
     public DcMotor E;
-  //  public ColorSensor color_sensor;
+    public ColorSensor color_sensor;
     double moveconstant = 1783 * (2/2.05); //WORKS
     double motorrotation = 538; //WORKS
     double turnconstant = 12.05; // per degree, so its rly small
     double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05); //untested, need to test
     String color = "";
-   /* int red = color_sensor.red();
+    int red = color_sensor.red();
     int blue = color_sensor.blue();
-    int green = color_sensor.green();*/
+    int green = color_sensor.green();
     @Override
     public void runOpMode() {
 
@@ -190,7 +190,7 @@ public class functiontester extends LinearOpMode {
         settargetpositioner(fr, -position);
 
     }
-/*    String colortestor(){
+    String colortestor(){
         if (green > blue && red > blue){
             return "yellow";
         }
@@ -202,7 +202,7 @@ public class functiontester extends LinearOpMode {
         }
         else {
             return "no color, sense again";
-        }*/
+        }}
 
     void moveExtender(int place){
         if (place == 0){

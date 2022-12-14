@@ -284,7 +284,7 @@ public class rightAuto extends LinearOpMode {
         settargetpositioner(fr, -position);
 
     }
-/*    String colortestor(){
+    String colortestor(){
         if (green > blue && red > blue){
             return "yellow";
         }
@@ -296,7 +296,7 @@ public class rightAuto extends LinearOpMode {
         }
         else {
             return "no color, sense again";
-        }*/
+        }}
 
     void moveExtender(int place){
         if (place == 0){
