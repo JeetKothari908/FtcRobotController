@@ -11,13 +11,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name="driving", group="Driver OP")
-public class driveropmode extends LinearOpMode {
+@TeleOp(name="driver", group="Driver OP")
+public class driverthing extends LinearOpMode {
 
     // Declare OpMode members.
     private final ElapsedTime runtime = new ElapsedTime();
 
     public Servo grabber;
+    double powersetter = 0.85;
 
     public DcMotor fl;
     public DcMotor fr;
@@ -78,12 +79,12 @@ public class driveropmode extends LinearOpMode {
             if(gamepad1.a){extend(1);}
             if(gamepad1.x){extend(2);}
             if(gamepad1.y){extend(  3);}
-
             telemetry.addData("fl",fl.getPower());
             telemetry.addData("fr",fr.getPower());
             telemetry.addData("bl",bl.getPower());
             telemetry.addData("br",br.getPower());
             telemetry.addData("grab", grabber.getPosition());
+            telemetry.addData("powersetter", powersetter);
             telemetry.update();
         }
     }
@@ -97,40 +98,40 @@ public class driveropmode extends LinearOpMode {
 
 
 
-   // void grab(){
+    // void grab(){
     //}
     //void ungrab(){
     //}
 
     void extend(int position) {
 
-            switch (position) {
-                case 0:
-                    E.setTargetPosition(0);
-                    E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    E.setPower(1);
+        switch (position) {
+            case 0:
+                E.setTargetPosition(0);
+                E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                E.setPower(1);
 
-                    break;
-                case 1:
-                    E.setTargetPosition(997);
-                    E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    E.setPower(1);
+                break;
+            case 1:
+                E.setTargetPosition(997);
+                E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                E.setPower(1);
 
-                    break;
-                case 2:
-                    E.setTargetPosition(1994);
-                    E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    E.setPower(1);
+                break;
+            case 2:
+                E.setTargetPosition(1994);
+                E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                E.setPower(1);
 
-                    break;
-                case 3:
-                    E.setTargetPosition(2990);
-                    E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    E.setPower(1);
+                break;
+            case 3:
+                E.setTargetPosition(2990);
+                E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                E.setPower(1);
 
 
-                    break;
-            }
+                break;
+        }
     }
 
 
@@ -138,11 +139,11 @@ public class driveropmode extends LinearOpMode {
         double horizontal = -gamepad1.left_stick_x*.5;   // this works so dont question it
         double vertical = gamepad1.left_stick_y*.5;
         double turn = -gamepad1.right_stick_x*2/3;
-      //  E.setPower(gamepad1.left_stick_y);
-        fl.setPower(Range.clip((vertical + horizontal + turn), -1, 1));
-        fr.setPower(Range.clip((vertical - horizontal - turn), -1, 1));
-        bl.setPower(Range.clip((vertical - horizontal + turn), -1, 1));
-        br.setPower(Range.clip((vertical + horizontal - turn), -1, 1));
+        //  E.setPower(gamepad1.left_stick_y);
+        fl.setPower((Range.clip((vertical + horizontal + turn), -1, 1))*powersetter);
+        fr.setPower((Range.clip((vertical - horizontal - turn), -1, 1))*powersetter);
+        bl.setPower((Range.clip((vertical - horizontal + turn), -1, 1))*powersetter);
+        br.setPower((Range.clip((vertical + horizontal - turn), -1, 1))*powersetter);
     }
 
     void move(double X, double Y, double T, double U, double TU, double P){

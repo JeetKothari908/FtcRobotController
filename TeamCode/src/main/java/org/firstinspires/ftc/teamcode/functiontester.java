@@ -61,9 +61,9 @@ public class functiontester extends LinearOpMode {
     double turnconstant = 12.05; // per degree, so its rly small
     double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05); //untested, need to test
     String color = "";
-    int red = color_sensor.red();
+   /* int red = color_sensor.red();
     int blue = color_sensor.blue();
-    int green = color_sensor.green();
+    int green = color_sensor.green();*/
     @Override
     public void runOpMode() {
 
@@ -74,7 +74,7 @@ public class functiontester extends LinearOpMode {
         bl = hardwareMap.get(DcMotor.class, "BL");
         br = hardwareMap.get(DcMotor.class, "BR");
         E = hardwareMap.get(DcMotor.class, "E");
-      //  color_sensor = hardwareMap.colorSensor.get("color_sensor");
+        color_sensor = hardwareMap.colorSensor.get("color_sensor");
 
         grabber = hardwareMap.get(Servo.class,"grab"); //THE SERVO IS IN PEROCENT, BW/ 1 OR 0. BASELINE IS .5
 
@@ -98,7 +98,7 @@ public class functiontester extends LinearOpMode {
         // runs the moment robot is initialized
         waitForStart();
         runtime.reset();
-        moveforward(3);
+
         while (opModeIsActive()) {}
     }
     // this is only for dc motors
@@ -190,18 +190,15 @@ public class functiontester extends LinearOpMode {
         settargetpositioner(fr, -position);
 
     }
-    String colortestor(){
-        if (green > blue && red > blue){
+    String colortestor() {
+        if (color_sensor.green() > color_sensor.blue() && color_sensor.red() > color_sensor.blue()) {
             return "yellow";
         }
-        if (blue > green && red > green){
+        if (color_sensor.blue() > color_sensor.green() && color_sensor.red() > color_sensor.green()) {
             return "purple";
         }
-        if (blue > red && green > red){
-            return "turqoise";
-        }
         else {
-            return "no color, sense again";
+            return "turqoise";
         }}
 
     void moveExtender(int place){
