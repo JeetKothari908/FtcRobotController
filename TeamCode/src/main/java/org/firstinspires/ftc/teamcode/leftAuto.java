@@ -65,9 +65,9 @@ public class leftAuto extends LinearOpMode {
     double turnconstant = 12.05; // per degree, so its rly small
     double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05); //untested, need to test
     String color = "";
-    int red = color_sensor.red();
-    int blue = color_sensor.blue();
-    int green = color_sensor.green();
+    int red = 0;
+    int blue = 0;
+    int green = 0;
     boolean holdpos = false;
 
 
@@ -119,7 +119,6 @@ public class leftAuto extends LinearOpMode {
         moveforward(0.53);
 
         //Scan cone code
-        String color = null;
 
         //differentiation
         color = colortestor();
@@ -246,13 +245,13 @@ public class leftAuto extends LinearOpMode {
 
     }
     String colortestor(){
-        if (green > blue && red > blue){
+        if (color_sensor.green() > color_sensor.blue() && color_sensor.red() > color_sensor.blue()){
             return "yellow";
         }
-        if (blue > green && red > green){
+        if (color_sensor.blue() > color_sensor.green() && color_sensor.red() > color_sensor.green()){
             return "purple";
         }
-        if (blue > red && green > red){
+        if (color_sensor.blue() > color_sensor.red() && color_sensor.green() > color_sensor.red()){
             return "turqoise";
         }
         else {

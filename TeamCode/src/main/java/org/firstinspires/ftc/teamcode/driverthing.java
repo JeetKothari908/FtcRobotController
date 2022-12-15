@@ -18,7 +18,7 @@ public class driverthing extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
     public Servo grabber;
-    double powersetter = 0.85;
+    double powersetter = 1;
 
     public DcMotor fl;
     public DcMotor fr;
@@ -69,12 +69,11 @@ public class driverthing extends LinearOpMode {
         while (opModeIsActive()) {
 
             move();
-
+            if (gamepad1.dpad_left){powersetter = 0.5;}
+            if (gamepad1.dpad_right){powersetter = 1;}
             if(gamepad1.right_trigger > 0.5){ grabber.setPosition(.295);
             }
-            if(gamepad1.left_trigger > 0.5){grabber.setPosition(0);
-            }
-
+            if(gamepad1.left_trigger > 0.5){grabber.setPosition(0);}
             if(gamepad1.b){extend(0);}
             if(gamepad1.a){extend(1);}
             if(gamepad1.x){extend(2);}
@@ -82,7 +81,7 @@ public class driverthing extends LinearOpMode {
             telemetry.addData("fl",fl.getPower());
             telemetry.addData("fr",fr.getPower());
             telemetry.addData("bl",bl.getPower());
-            telemetry.addData("br",br.getPower());
+            telemetry.addData("e",E.getCurrentPosition());
             telemetry.addData("grab", grabber.getPosition());
             telemetry.addData("powersetter", powersetter);
             telemetry.update();
@@ -109,25 +108,25 @@ public class driverthing extends LinearOpMode {
             case 0:
                 E.setTargetPosition(0);
                 E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                E.setPower(1);
+                E.setPower(0.75);
 
                 break;
             case 1:
-                E.setTargetPosition(997);
+                E.setTargetPosition(1300);
                 E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                E.setPower(1);
+                E.setPower(0.75);
 
                 break;
             case 2:
                 E.setTargetPosition(1994);
                 E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                E.setPower(1);
+                E.setPower(0.75);
 
                 break;
             case 3:
                 E.setTargetPosition(2990);
                 E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                E.setPower(1);
+                E.setPower(0.75);
 
 
                 break;
