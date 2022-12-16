@@ -1,113 +1,224 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-/**
- * This file contains an example of an iterative (Non-Linear) "OpMode".
- * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
- * The names of OpModes appear on the menu of the FTC Driver Station.
- * When a selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all iterative OpModes contain.
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
+@Autonomous(name="nameinphone", group="Autonomous")
+public class autotemplate extends LinearOpMode {
 
-@TeleOp(name="autotemp", group="Iterative Opmode")
-@Disabled
-public class autotemplate extends OpMode
-{
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
+//    private final ElapsedTime runtime = new ElapsedTime();
 
-    /*
-     * Code to run ONCE when the driver hits INIT
-     */
+
+
+    //               )\         O_._._._A_._._._O         /(
+    //                \`--.___,'=================`.___,--'/
+    //                 \`--._.__                 __._,--'/
+    //                   \  ,. l`~~~~~~~~~~~~~~~'l ,.  /
+    //       __            \||(_)!_!_!_.-._!_!_!(_)||/            __
+    //       \\`-.__        ||_|____!!_|;|_!!____|_||        __,-'//
+    //        \\    `==---='// Declare OpMode members.`=---=='    //
+    /*    /**/private final ElapsedTime runtime = new ElapsedTime();/**/
+    //         \  ,.`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',.  /
+    //           \||  ____,-------._,-------._,-------.____  ||/
+    //            ||\|___!`======="!`======="!`======="!___|/||
+    //            || |---||--------||-| | |-!!--------||---| ||
+    //  __O_____O_ll_lO_____O_____O|| |'|'| ||O_____O_____Ol_ll_O_____O__
+    //  o H o o H o o H o o H o o |-----------| o o H o o H o o H o o H o
+    // ___H_____H_____H_____H____O =========== O____H_____H_____H_____H___
+    //                          /|=============|\
+    //()______()______()______() '==== +-+ ====' ()______()______()______()
+    //||{_}{_}||{_}{_}||{_}{_}/| ===== |_| ===== |\{_}{_}||{_}{_}||{_}{_}||
+    //||      ||      ||     / |==== s(   )s ====| \     ||      ||      ||
+    //======================()  =================  ()======================
+    //----------------------/| ------------------- |\----------------------
+    //                     / |---------------------| \
+    //-'--'--'           ()  '---------------------'  ()
+    //                   /| ------------------------- |\    --'--'--'
+    //       --'--'     / |---------------------------| \    '--'
+    //                ()  |___________________________|  ()           '--'-
+    //  --'-          /| _______________________________  |\
+    // --' gpyy      / |__________________________________| \
+
+    public Servo grabber;
+
+    int position = 180;
+    double constanter = 0.0;
+    public DcMotor fl;
+    public DcMotor fr;
+    public DcMotor bl;
+    public DcMotor br;
+    public DcMotor E;
+    public ColorSensor color_sensor;
+    double moveconstant = 1783 * (2/2.05); //WORKS
+    double motorrotation = 538; //WORKS
+    double turnconstant = 12.05; // per degree, so its rly small
+    double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05); //untested, need to test
+    String color = "";
+
     @Override
-    public void init() {
-        telemetry.addData("Status", "Initialized");
+    public void runOpMode() {
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
 
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
-    }
+        fl = hardwareMap.get(DcMotor.class, "FL");
+        fr = hardwareMap.get(DcMotor.class, "FR");
+        bl = hardwareMap.get(DcMotor.class, "BL");
+        br = hardwareMap.get(DcMotor.class, "BR");
+        E = hardwareMap.get(DcMotor.class, "E");
+        color_sensor = hardwareMap.colorSensor.get("color_sensor");
 
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
-    @Override
-    public void init_loop() {
-    }
+        grabber = hardwareMap.get(Servo.class,"grab"); //THE SERVO IS IN PEROCENT, BW/ 1 OR 0. BASELINE IS .5
 
-    /*
-     * Code to run ONCE when the driver hits PLAY
-     */
-    @Override
-    public void start() {
+        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        E.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        // runs the moment robot is initialized
+        waitForStart();
         runtime.reset();
+        // put code here!
+
+        while (opModeIsActive()) {}
+    }
+    // this is only for dc motors
+    void settargetpositioner(DcMotor motor, int position){
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor.setTargetPosition(position);
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor.setPower(1.0);
     }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
-     */
-    @Override
-    public void loop() {
+    void moveforward(double meters){
+
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        int position = (int) (meters * moveconstant)*-1;
+
+        settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
 
     }
+    void movebackward(double meters){
+        fl.setDirection(DcMotorSimple.Direction.FORWARD);
+        fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        bl.setDirection(DcMotorSimple.Direction.FORWARD);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
 
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
+        int position = (int) (meters * moveconstant)*-1;
+
+        settargetpositioner(fl, position);
+        settargetpositioner(br, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+
+    }
+    void strafeleft(double meters){
+        fl.setDirection(DcMotorSimple.Direction.FORWARD);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        int position = (int) (meters * strafeconstant)*-1;
+
+        settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+
+    }
+    void straferight(double meters){
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        bl.setDirection(DcMotorSimple.Direction.FORWARD);
+        br.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        int position = (int) (meters * strafeconstant)*-1;
+        settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+
+    }
+    void turnright(int degrees){
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.FORWARD);
+        int position = (int) (degrees * turnconstant)*-1;
+        settargetpositioner(fl, -position);
+        settargetpositioner(bl, -position);
+        settargetpositioner(br, position);
+        settargetpositioner(fr, position);
+    }
+    void turnleft(int degrees){
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        int position = (int) (degrees * turnconstant)*-1;
+        settargetpositioner(fl, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, -position);
+        settargetpositioner(fr, -position);
+
+    }
+    String colortestor() {
+        if (color_sensor.green() > color_sensor.blue() && color_sensor.red() > color_sensor.blue()) {
+            return "yellow";
+        }
+        if (color_sensor.blue() > color_sensor.green() && color_sensor.red() > color_sensor.green()) {
+            return "purple";
+        }
+        else {
+            return "turqoise";
+        }}
+
+    void moveExtender(int place){
+        if (place == 0){
+            settargetpositioner(E, 0);
+        }
+        if (place == 1){
+            settargetpositioner(E, 997);
+        }
+        if (place == 2){
+            settargetpositioner(E, 1994);
+        }
+        if (place == 3) {
+            settargetpositioner(E, 2990);
+        }
+    }
+    void openclaw(){
+        grabber.setPosition(.295);
+    }
+    void closeclaw(){
+        grabber.setPosition(0.0);
     }
 
 }
