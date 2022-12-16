@@ -2,18 +2,15 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="leftAuto", group="Autonomous")
-public class leftAuto extends LinearOpMode {
+@Autonomous(name="rightauto", group="Autonomous")
+public class rightauto extends LinearOpMode {
 
     // Declare OpMode members.
 //    private final ElapsedTime runtime = new ElapsedTime();
@@ -49,11 +46,10 @@ public class leftAuto extends LinearOpMode {
     //  --'-          /| _______________________________  |\
     // --' gpyy      / |__________________________________| \
 
-
     public Servo grabber;
 
     int position = 180;
-
+    double constanter = 0.0;
     public DcMotor fl;
     public DcMotor fr;
     public DcMotor bl;
@@ -65,35 +61,22 @@ public class leftAuto extends LinearOpMode {
     double turnconstant = 12.05; // per degree, so its rly small
     double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05); //untested, need to test
     String color = "";
-    int red = 0;
-    int blue = 0;
-    int green = 0;
-    boolean holdpos = false;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /* int red = color_sensor.red();
+     int blue = color_sensor.blue();
+     int green = color_sensor.green();*/
     @Override
     public void runOpMode() {
 
-        fl= hardwareMap.get(DcMotor.class, "FL");
-        fr= hardwareMap.get(DcMotor.class, "FR");
-        bl= hardwareMap.get(DcMotor.class, "BL");
-        br= hardwareMap.get(DcMotor.class, "BR");
 
+
+        fl = hardwareMap.get(DcMotor.class, "FL");
+        fr = hardwareMap.get(DcMotor.class, "FR");
+        bl = hardwareMap.get(DcMotor.class, "BL");
+        br = hardwareMap.get(DcMotor.class, "BR");
         E = hardwareMap.get(DcMotor.class, "E");
+        color_sensor = hardwareMap.colorSensor.get("color_sensor");
 
-        grabber = hardwareMap.get(Servo.class, "grab");
+        grabber = hardwareMap.get(Servo.class,"grab"); //THE SERVO IS IN PEROCENT, BW/ 1 OR 0. BASELINE IS .5
 
         fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -111,51 +94,48 @@ public class leftAuto extends LinearOpMode {
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
+
         // runs the moment robot is initialized
         waitForStart();
         runtime.reset();
-
-
         moveforward(0.53);
-
-        //Scan cone code
-
-        //differentiation
         color = colortestor();
-
-        if(color.equals("purple"))
+        if(color.equals("turqoise"))
         {
             moveforward(0.15);
-            turnright(90);
+            turnleft(90);
             movebackward(0.65);
-            strafeleft(0.40);
+            straferight(0.40);
             moveforward(0.10);
-            moveExtender(1);
-            openclaw();
+            //low extender
+            //extend(1);
+            //release claw (NEEDS TO BE ADDED)
+
         }
         else if(color.equals("yellow"))
         {
-            turnright(90);
+            turnleft(90);
             strafeleft(0.40);
             moveforward(0.10);
-            moveExtender(2);
-            openclaw();
+            //mid extender
+            //extend(2);
+            //release claw (NEEDS TO BE ADDED)
         }
         else
         {
             moveforward(0.15);
-            turnright(90);
+            turnleft(90);
             moveforward(0.65);
-            strafeleft(0.40);
+            straferight(0.40);
             moveforward(0.10);
-            moveExtender(3);
-            openclaw();
+            //extender to low height
+            //extend(1);
+            //release claw (NEEDS TO BE ADDED)
         }
 
         while (opModeIsActive()) {}
-
     }
-
+    // this is only for dc motors
     void settargetpositioner(DcMotor motor, int position){
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -244,18 +224,15 @@ public class leftAuto extends LinearOpMode {
         settargetpositioner(fr, -position);
 
     }
-    String colortestor(){
-        if (color_sensor.green() > color_sensor.blue() && color_sensor.red() > color_sensor.blue()){
+    String colortestor() {
+        if (color_sensor.green() > color_sensor.blue() && color_sensor.red() > color_sensor.blue()) {
             return "yellow";
         }
-        if (color_sensor.blue() > color_sensor.green() && color_sensor.red() > color_sensor.green()){
+        if (color_sensor.blue() > color_sensor.green() && color_sensor.red() > color_sensor.green()) {
             return "purple";
         }
-        if (color_sensor.blue() > color_sensor.red() && color_sensor.green() > color_sensor.red()){
-            return "turqoise";
-        }
         else {
-            return "no color, sense again";
+            return "turqoise";
         }}
 
     void moveExtender(int place){
@@ -275,6 +252,8 @@ public class leftAuto extends LinearOpMode {
     void openclaw(){
         grabber.setPosition(.295);
     }
-    void closeclaw(){grabber.setPosition(0.0);
+    void closeclaw(){
+        grabber.setPosition(0.0);
     }
+
 }
