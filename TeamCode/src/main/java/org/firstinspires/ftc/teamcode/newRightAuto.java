@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.Range;
 @Autonomous(name="rightauto", group="Autonomous")
 public class rightauto extends LinearOpMode {
 
+    private final ElapsedTime runtime = new ElapsedTime();
     public Servo grabber;
 
     int position = 180;
@@ -66,7 +67,7 @@ public class rightauto extends LinearOpMode {
         runtime.reset();
        
         //auto goes here (Aiden)
-	      /*for starting on the RIGHT.
+	/*for starting on the RIGHT.
         set robot so the sensor is in line with the cone.
         this should score a max of 26 points.
         we push the signal cone around but thats allowed by the rules.
@@ -92,7 +93,7 @@ public class rightauto extends LinearOpMode {
             color = "turquoise";
         }
            
-        if(color.equals("turquoise")){
+        if (color.equals("turquoise")){
           //Moves to zone
           moveright(0.32);
           moveback(0.55);
@@ -104,11 +105,11 @@ public class rightauto extends LinearOpMode {
           movebackward(0.05);
           extend(0);
         }
-        else if(color.equals("yellow"))
+        else if (color.equals("yellow"))
         {
           //moves to zone
-         moveright(0.53);
-         //drops cone
+          moveright(0.53);
+          //drops cone
           extend(2);
           moveforward(0.05);
           closeclaw();
@@ -128,10 +129,11 @@ public class rightauto extends LinearOpMode {
           movebackward(0.05);
           extend(0);
         }
-      //end of auto. Robot is in correct zone.
+      	//end of auto. Robot is in correct zone.
 
         while (opModeIsActive()) {}
     }
+	
     // this is only for dc motors
     void settargetpositioner(DcMotor motor, int position){
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -142,7 +144,6 @@ public class rightauto extends LinearOpMode {
     }
 
     void moveforward(double meters){
-
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -154,8 +155,8 @@ public class rightauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-
     }
+	
     void movebackward(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -168,8 +169,8 @@ public class rightauto extends LinearOpMode {
         settargetpositioner(br, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-
     }
+	
     void strafeleft(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -182,8 +183,8 @@ public class rightauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-
     }
+	
     void straferight(double meters){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -195,8 +196,8 @@ public class rightauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-
     }
+	
     void turnright(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -208,6 +209,7 @@ public class rightauto extends LinearOpMode {
         settargetpositioner(br, position);
         settargetpositioner(fr, position);
     }
+	
     void turnleft(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -221,6 +223,7 @@ public class rightauto extends LinearOpMode {
         settargetpositioner(fr, -position);
 
     }
+	
     String colortestor() {
         if (color_sensor.green() > color_sensor.blue() && color_sensor.red() > color_sensor.blue()) {
             return "yellow";
@@ -229,8 +232,9 @@ public class rightauto extends LinearOpMode {
             return "purple";
         }
         else {
-            return "turqoise";
-        }}
+            return "turquoise";
+        }
+    }
 
     void moveExtender(int place){
         if (place == 0){
@@ -246,11 +250,12 @@ public class rightauto extends LinearOpMode {
             settargetpositioner(E, 2990);
         }
     }
+	
     void openclaw(){
         grabber.setPosition(.295);
     }
+	
     void closeclaw(){
         grabber.setPosition(0.0);
     }
-
 }
