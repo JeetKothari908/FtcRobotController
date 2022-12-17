@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="rightauto", group="Autonomous")
-public class rightauto extends LinearOpMode {
+@Autonomous(name="rightautoerer", group="Autonomous")
+public class righterauto extends LinearOpMode {
 
     // Declare OpMode members.
 //    private final ElapsedTime runtime = new ElapsedTime();
@@ -44,7 +44,7 @@ public class rightauto extends LinearOpMode {
     //       --'--'     / |---------------------------| \    '--'
     //                ()  |___________________________|  ()           '--'-
     //  --'-          /| _______________________________  |\
-    // --' gpyy      / |__________________________________| \
+    // --'          / |__________________________________| \
 
     public Servo grabber;
 
@@ -61,9 +61,7 @@ public class rightauto extends LinearOpMode {
     double turnconstant = 12.05; // per degree, so its rly small
     double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05); //untested, need to test
     String color = "";
-    /* int red = color_sensor.red();
-     int blue = color_sensor.blue();
-     int green = color_sensor.green();*/
+
     @Override
     public void runOpMode() {
 
@@ -100,40 +98,55 @@ public class rightauto extends LinearOpMode {
         runtime.reset();
         moveforward(0.53);
         color = colortestor();
-        if(color.equals("turqoise"))
-        {
-            moveforward(0.15);
-            turnleft(90);
-            movebackward(0.65);
-            straferight(0.40);
-            moveforward(0.10);
-            //low extender
-            //extend(1);
-            //release claw (NEEDS TO BE ADDED)
 
-        }
-        else if(color.equals("yellow"))
-        {
-            turnleft(90);
-            strafeleft(0.40);
-            moveforward(0.10);
-            //mid extender
-            //extend(2);
-            //release claw (NEEDS TO BE ADDED)
-        }
-        else
-        {
-            moveforward(0.15);
-            turnleft(90);
-            moveforward(0.65);
-            straferight(0.40);
-            moveforward(0.10);
-            //extender to low height
-            //extend(1);
-            //release claw (NEEDS TO BE ADDED)
+        /*for starting on the RIGHT.
+        set robot so the sensor is in line with the cone.
+        this should score a max of 26 points.
+        we push the signal cone around but thats allowed by the rules.
+        ALL DISTANCES MUST BE TESTED ON THE GAME FIELD BEFORE
+        MATCHES. Fields are standardized to +-1 inch.
+        */
+        //initial movement
+
+        while(opModeIsActive()) {
+            closeclaw();
+            straferight(0.53);
+
+            if (color.equals("turqoise")) {
+                //Moves to zone strafe
+                straferight(0.32);
+                movebackward(0.55);
+                straferight(0.24);
+                //drops cone
+                extend(1);
+                moveforward(0.05);
+                openclaw();
+                movebackward(0.05);
+                extend(0);
+            } else if (color.equals("yellow")) {
+                //moves to zone
+                straferight(0.53);
+                //drops cone
+                extend(2);
+                moveforward(0.05);
+                closeclaw();
+                movebackward(0.05);
+                extend(0);
+            } else {
+                //moves to zone
+                straferight(0.32);
+                moveforward(0.60);
+                straferight(0.24);
+                //drops cone
+                extend(3);
+                moveforward(0.05);
+                openclaw();
+                movebackward(0.05);
+                extend(0);
+            }
+            break;
         }
 
-        while (opModeIsActive()) {}
     }
     // this is only for dc motors
     void settargetpositioner(DcMotor motor, int position){
@@ -229,13 +242,13 @@ public class rightauto extends LinearOpMode {
             return "yellow";
         }
         if (color_sensor.blue() > color_sensor.green() && color_sensor.red() > color_sensor.green()) {
-            return "purple";
+            return "magenta";
         }
         else {
-            return "turqoise";
+            return "turquoise";
         }}
 
-    void moveExtender(int place){
+    void extend(int place){
         if (place == 0){
             settargetpositioner(E, 0);
         }

@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name="driving", group="Driver OP")
+@TeleOp(name="THE DRIVER OP", group="Driver OP")
 public class driveropmode extends LinearOpMode {
 
     // Declare OpMode members.

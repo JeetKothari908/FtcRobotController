@@ -69,8 +69,14 @@ public class driverthing extends LinearOpMode {
         while (opModeIsActive()) {
 
             move();
-            if (gamepad1.dpad_left){powersetter = 0.5;}
-            if (gamepad1.dpad_right){powersetter = 1;}
+            if (gamepad1.dpad_left){
+                if (powersetter == 0.5){
+                    powersetter = 1.0;
+                }
+                if (powersetter == 1.0){
+                    powersetter = 0.5;
+                }
+            }
 /*
             if(gamepad1.dpad_left){
                 if (powersetter > 0.5){

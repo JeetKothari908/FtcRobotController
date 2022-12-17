@@ -98,6 +98,7 @@ public class autotemplate extends LinearOpMode {
         runtime.reset();
         // put code here!
 
+
         while (opModeIsActive()) {}
     }
     // this is only for dc motors
