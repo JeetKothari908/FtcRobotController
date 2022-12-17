@@ -97,12 +97,15 @@ public class autotemplate extends LinearOpMode {
         waitForStart();
         runtime.reset();
         // put code here!
-        moveforward(0.5);
-        sleep(1000);
-        moveforward(0.5);
+
 
         while (opModeIsActive()) {
-
+            moveforward(0.5);
+            sleep(1000);
+            moveforward(0.5);
+            telemetry.addData("targetposition", fl.getTargetPosition());
+            telemetry.addData("currentpostition", position);
+            telemetry.update();
         }
     }
     // this is only for dc motors
