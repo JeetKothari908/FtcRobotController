@@ -100,12 +100,17 @@ public class autotemplate extends LinearOpMode {
 
 
         while (opModeIsActive()) {
-            moveforward(0.5);
-            sleep(1000);
-            moveforward(0.5);
-            telemetry.addData("targetposition", fl.getTargetPosition());
-            telemetry.addData("currentpostition", position);
-            telemetry.update();
+                strafeleft(.25);
+                straferight(.25);
+                turnright(90);
+                turnleft(90);
+                moveforward(.25);
+                movebackward(.25);
+                telemetry.addData("targetposition", fl.getTargetPosition());
+                telemetry.addData("currentpostition", position);
+                telemetry.update();
+                sleep(1000);
+                break;
         }
     }
     // this is only for dc motors
@@ -144,6 +149,7 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(br, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
+        while (fl.getCurrentPosition() < position - 5){}
 
     }
     void strafeleft(double meters){
@@ -158,6 +164,7 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
+        while (fl.getCurrentPosition() < position - 5){}
 
     }
     void straferight(double meters){
@@ -171,6 +178,7 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
+        while (fl.getCurrentPosition() < position - 5){}
 
     }
     void turnright(int degrees){
@@ -183,6 +191,8 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(bl, -position);
         settargetpositioner(br, position);
         settargetpositioner(fr, position);
+        while (fr.getCurrentPosition() < position - 5){}
+
     }
     void turnleft(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -195,6 +205,7 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(bl, position);
         settargetpositioner(br, -position);
         settargetpositioner(fr, -position);
+        while (fl.getCurrentPosition() < position - 5){}
 
     }
     String colortestor() {
