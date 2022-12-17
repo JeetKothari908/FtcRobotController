@@ -164,7 +164,11 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.getCurrentPosition() < position - 5){sleep(1);}
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
     void straferight(double meters){
