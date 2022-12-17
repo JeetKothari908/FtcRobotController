@@ -109,20 +109,30 @@ public class righterauto extends LinearOpMode {
         while(opModeIsActive()) {
             closeclaw();
             straferight(0.53);
+            sleep(1000);
             color = colortestor();
             telemetry.addData("color is ", color);
             telemetry.update();
             if (color.equals("turqoise")) {
                 //Moves to zone strafe
                 straferight(0.32);
+                sleep(1000);
                 movebackward(0.55);
+                sleep(1000);
                 straferight(0.24);
-                //drops cone
-                moveExtender(1);
-                moveforward(0.05);
+                sleep(1000);
                 openclaw();
+                sleep(1000);
+                moveExtender(1);
+                sleep(1000);
+                moveforward(0.05);
+                sleep(1000);
+                openclaw();
+                sleep(1000);
                 movebackward(0.05);
+                sleep(1000);
                 moveExtender(0);
+                sleep(1000);
             } else if (color.equals("yellow")) {
                 //moves to zone
                 straferight(0.53);
