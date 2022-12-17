@@ -100,8 +100,8 @@ public class autotemplate extends LinearOpMode {
 
 
         while (opModeIsActive()) {
-                strafeleft(.25);
-                straferight(.25);
+                strafeleft(.50);
+                straferight(.50);
                 turnright(90);
                 turnleft(90);
                 moveforward(.25);
@@ -164,11 +164,12 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        while (fl.getCurrentPosition() < position){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+
 
     }
     void straferight(double meters){
@@ -182,7 +183,12 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.getCurrentPosition() < position - 5){sleep(1);}
+        while (fl.getCurrentPosition() < position){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+
 
     }
     void turnright(int degrees){
