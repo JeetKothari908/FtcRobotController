@@ -99,7 +99,11 @@ public class autotemplate extends LinearOpMode {
         // put code here!
 
 
-        while (opModeIsActive()) {}
+        while (opModeIsActive()) {
+            moveforward(0.5);
+            sleep(1000);
+            moveforward(0.5);
+        }
     }
     // this is only for dc motors
     void settargetpositioner(DcMotor motor, int position){
@@ -123,7 +127,9 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
+        while (fl.getCurrentPosition() < position){
 
+        }
     }
     void movebackward(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
