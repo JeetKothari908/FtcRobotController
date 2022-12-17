@@ -155,7 +155,11 @@ public class leftauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
     }
     void movebackward(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -169,6 +173,11 @@ public class leftauto extends LinearOpMode {
         settargetpositioner(br, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
 
     }
     void strafeleft(double meters){
@@ -183,6 +192,12 @@ public class leftauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+
 
     }
     void straferight(double meters){
@@ -196,6 +211,12 @@ public class leftauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+
 
     }
     void turnright(int degrees){
@@ -208,6 +229,12 @@ public class leftauto extends LinearOpMode {
         settargetpositioner(bl, -position);
         settargetpositioner(br, position);
         settargetpositioner(fr, position);
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+
     }
     void turnleft(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -220,6 +247,11 @@ public class leftauto extends LinearOpMode {
         settargetpositioner(bl, position);
         settargetpositioner(br, -position);
         settargetpositioner(fr, -position);
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
 
     }
     String colortestor() {
@@ -235,16 +267,28 @@ public class leftauto extends LinearOpMode {
 
     void moveExtender(int place){
         if (place == 0){
-            settargetpositioner(E, 0);
+            E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            E.setTargetPosition(0);
+            E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            E.setPower(1.0);
         }
         if (place == 1){
-            settargetpositioner(E, 997);
+            E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            E.setTargetPosition(997);
+            E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            E.setPower(1.0);
         }
         if (place == 2){
-            settargetpositioner(E, 1994);
+            E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            E.setTargetPosition(1944);
+            E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            E.setPower(1.0);
         }
         if (place == 3) {
-            settargetpositioner(E, 2990);
+            E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            E.setTargetPosition(2990);
+            E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            E.setPower(1.0);
         }
     }
     void openclaw(){
