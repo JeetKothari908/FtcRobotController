@@ -96,8 +96,6 @@ public class righterauto extends LinearOpMode {
         // runs the moment robot is initialized
         waitForStart();
         runtime.reset();
-        moveforward(0.53);
-        color = colortestor();
 
         /*for starting on the RIGHT.
         set robot so the sensor is in line with the cone.
@@ -111,7 +109,9 @@ public class righterauto extends LinearOpMode {
         while(opModeIsActive()) {
             closeclaw();
             straferight(0.53);
-
+            color = colortestor();
+            telemetry.addData("color is ", color);
+            telemetry.update();
             if (color.equals("turqoise")) {
                 //Moves to zone strafe
                 straferight(0.32);
