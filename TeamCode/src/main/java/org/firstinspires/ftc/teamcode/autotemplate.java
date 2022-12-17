@@ -209,16 +209,28 @@ public class autotemplate extends LinearOpMode {
 
     void moveExtender(int place){
         if (place == 0){
-            settargetpositioner(E, 0);
+            E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            E.setTargetPosition(0);
+            E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            E.setPower(1.0);
         }
         if (place == 1){
-            settargetpositioner(E, 997);
+            E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            E.setTargetPosition(997);
+            E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            E.setPower(1.0);
         }
         if (place == 2){
-            settargetpositioner(E, 1994);
+            E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            E.setTargetPosition(1944);
+            E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            E.setPower(1.0);
         }
         if (place == 3) {
-            settargetpositioner(E, 2990);
+            E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            E.setTargetPosition(2990);
+            E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            E.setPower(1.0);
         }
     }
     void openclaw(){
