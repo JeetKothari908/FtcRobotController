@@ -127,9 +127,7 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.getCurrentPosition() < position){
-
-        }
+        while (fl.getCurrentPosition() < position - 5){}
     }
     void movebackward(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
