@@ -135,7 +135,11 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.getCurrentPosition() < position - 5){}
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
     }
     void movebackward(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -149,7 +153,11 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(br, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.getCurrentPosition() < position - 5){}
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
 
     }
     void strafeleft(double meters){
@@ -164,7 +172,7 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.getCurrentPosition() < position){sleep(1);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -183,7 +191,7 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.getCurrentPosition() < position){sleep(1);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -201,7 +209,11 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(bl, -position);
         settargetpositioner(br, position);
         settargetpositioner(fr, position);
-        while (fr.getCurrentPosition() < position - 5){}
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
 
     }
     void turnleft(int degrees){
@@ -215,7 +227,11 @@ public class autotemplate extends LinearOpMode {
         settargetpositioner(bl, position);
         settargetpositioner(br, -position);
         settargetpositioner(fr, -position);
-        while (fl.getCurrentPosition() < position - 5){}
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
 
     }
     String colortestor() {
