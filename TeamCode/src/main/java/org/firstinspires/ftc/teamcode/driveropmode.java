@@ -12,6 +12,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @TeleOp(name="THE DRIVER OP", group="Driver OP")
 public class driveropmode extends LinearOpMode {
 
@@ -27,9 +29,8 @@ public class driveropmode extends LinearOpMode {
         runtime.reset();
 
         while (opModeIsActive()) {
+            telemetry.addLine(""+robot.distance_sensor.getDistance(DistanceUnit.CM));
 
-            if(robot.blockDriver){}
-            else{
             robot.move();
             if(gamepad1.right_trigger > 0.5){robot.grabber.setPosition(.295);
             }
@@ -39,9 +40,7 @@ public class driveropmode extends LinearOpMode {
             if(gamepad1.a){robot.extend(1);}
             if(gamepad1.x){robot.extend(2);}
             if(gamepad1.y){robot.extend(3);}
-            if(gamepad1.right_bumper){
-                robot.jiggle(15);
-            }
-        }}
+            telemetry.update();
+        }
     }
 }

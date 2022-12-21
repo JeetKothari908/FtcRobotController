@@ -193,19 +193,7 @@ public class abstraction {
         br.setPower(0);
 
 
-        try {
-            FileWriter writer = new FileWriter("JigglerOutput.txt");
 
-            writer.write("total of "+rawJiggleData.size()+"datapoints recorded,");
-            writer.write("each represents appx. "+(deg/rawJiggleData.size())+" deg of area");
-            for(Double d: rawJiggleData) {
-                writer.write(d + System.lineSeparator());
-            }
-
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         blockDriver=false;
     }
