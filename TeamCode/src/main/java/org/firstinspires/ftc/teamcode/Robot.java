@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -18,6 +19,9 @@ public class Robot {
     public DcMotor FR;
     public DcMotor BL;
     public DcMotor BR;
+
+    // sensors
+    public DistanceSensor DS;
 
     // autonomous strafe constants (trial & error so that units are meters in autonomous)
     public double AYmult;
