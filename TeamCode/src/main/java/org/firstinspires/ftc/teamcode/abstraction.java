@@ -197,54 +197,71 @@ public class abstraction {
 
         blockDriver=false;
     }
-    public void jiggle_and_move(){
-        abstraction robot = new abstraction(hardwareMap, gamepad1);
+    public void jiggle_and_move(double deg){
+       // abstraction robot = new abstraction(hardwareMap, gamepad1);
 
-        robot.defineAndStart();
-        waitForStart();
-        runtime.reset();
+        blockDriver=true;
+        move(0, 0, -deg, 0, 12.05, 1);
 
-        while(opModeIsActive()){
-            robot.jiggle(25);
-            try {
+        // make sure arraylist exists & is empty
+        rawJiggleData = new ArrayList<Double>();
+        rawJiggleData.clear();
+
+        // and then we jiggle;
+
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.FORWARD);
+        int position = (int) (2*deg * 12.05)*-1; // jeet wtf is this code?
+        settargetposition(fl, -position); // and then you negate the negative? WTF you're wasting clock cycles!
+        settargetposition(bl, -position);
+        settargetposition(br, position);
+        settargetposition(fr, position);
+        double last_data = 0;
+        double main_distance;
+        while (fl.isBusy()){
+            double d = distance_sensor.getDistance(DistanceUnit.CM);
+            if (last_data == 0){last_data = d;}
+            double difference = Math.abs(d-last_data);
+            if (difference > 0.5*d){
+                fl.setPower(0);
+                fr.setPower(0);
+                bl.setPower(0);
+                br.setPower(0);
+
+                main_distance = last_data;
+                move(0, 0, 0.5*deg, 0, 12.05, 1);
+         //       telemetry.addLine(""+main_distance);
+                float m_distance_prime = (float) Math.sqrt(main_distance*main_distance-(200-200*Math.cos(12.5)));
+                move(0, m_distance_prime, 0, 0, 12.05, 1);
+                // then pick up or drop cone
 
 
-                double last_data = 0;
-                double main_distance;
-                for(Double d: robot.rawJiggleData) {
-                    if (last_data == 0){last_data = d;}
-                    double difference = Math.abs(d-last_data);
-                    if (difference > 0.5*d){
-                        main_distance = last_data;
-                        robot.move(0, 0, -12.5, 0, 12.05, 1);
-                        telemetry.addLine(""+main_distance);
-                        float m_distance_prime = (float) Math.sqrt(main_distance*main_distance-(200-200*Math.cos(12.5)));
-                        robot.move(0, m_distance_prime, 0, 0, 12.05, 1);
-                        // then pick up or drop cone
-
-
-                        //this is the distance of the pole/cone when outside of the sensors fov
-                        //then rotate half of fov radius- not just the sensor
-                        // if the whole robot moves
-                        // then move forward sqrt((main_distance)^2-(r2+r2﹣2r^2cosγ)) where y is 0.5 of FOV radius, and r is the distance of the sensor to its center of rotation
-                        // -- this value can be a constant we trial and error
-                        //
-                        //
-                    }
-                    last_data = d;
-
-                }
-
-
-            } catch (IOException e) {
-                telemetry.addLine("dies");
+                //this is the distance of the pole/cone when outside of the sensors fov
+                //then rotate half of fov radius- not just the sensor
+                // if the whole robot moves
+                // then move forward sqrt((main_distance)^2-(r2+r2﹣2r^2cosγ)) where y is 0.5 of FOV radius, and r is the distance of the sensor to its center of rotation
+                // -- this value can be a constant we trial and error
+                //
+                //
             }
-            telemetry.addData("jiggles: ",robot.rawJiggleData);
-            telemetry.update();
+            last_data = d;
 
 
-            sleep(10000);
+            rawJiggleData.add(distance_sensor.getDistance(DistanceUnit.CM));
+
+
+
         }
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+
+
+
+
     }
 
 }
