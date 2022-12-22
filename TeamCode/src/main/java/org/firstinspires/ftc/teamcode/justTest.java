@@ -12,7 +12,7 @@ public class justTest extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() throws InterruptedException {
-
+/*
         abstraction robot = new abstraction(hardwareMap, gamepad1);
 
         robot.defineAndStart();
@@ -45,6 +45,6 @@ telemetry.update();
 
 
 sleep(10000);
-        }
+        }*/
     }
 }

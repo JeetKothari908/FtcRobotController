@@ -25,6 +25,7 @@ public class driveropmode extends LinearOpMode {
         abstraction robot = new abstraction(hardwareMap, gamepad1);
 
         robot.defineAndStart();
+        robot.telemetry=telemetry;
         waitForStart();
         runtime.reset();
 
@@ -32,14 +33,15 @@ public class driveropmode extends LinearOpMode {
             telemetry.addLine(""+robot.distance_sensor.getDistance(DistanceUnit.CM));
 
             robot.move();
-            if(gamepad1.right_trigger > 0.5){robot.grabber.setPosition(.295);
+            if(gamepad1.right_trigger > 0.5){robot.grabber.setPosition(0.595);
             }
-            if(gamepad1.left_trigger > 0.5){robot.grabber.setPosition(0);
+            if(gamepad1.left_trigger > 0.5){robot.grabber.setPosition(0.295);
             }
             if(gamepad1.b){robot.extend(0);}
             if(gamepad1.a){robot.extend(1);}
             if(gamepad1.x){robot.extend(2);}
             if(gamepad1.y){robot.extend(3);}
+            if(gamepad1.right_bumper){robot.jiggle_and_move(25);}
             telemetry.update();
         }
     }

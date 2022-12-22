@@ -272,7 +272,7 @@ public class autotemplate extends LinearOpMode {
         }
     }
     void openclaw(){
-        grabber.setPosition(.295);
+        grabber.setPosition(.395);
     }
     void closeclaw(){
         grabber.setPosition(0.0);

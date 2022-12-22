@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.io.FileWriter;
@@ -40,6 +41,8 @@ public class abstraction {
 
     public HardwareMap hardwareMap;
     public Gamepad gamepad1;
+
+    public Telemetry telemetry;
 
     public boolean blockDriver=false; // bad if set to true under circumstances beyond nominal operation
 
@@ -197,4 +200,78 @@ public class abstraction {
 
         blockDriver=false;
     }
+    public void jiggle_and_move(double deg){
+        // abstraction robot = new abstraction(hardwareMap, gamepad1);
+
+        blockDriver=true;
+        move(0, 0, -deg, 0, 12.05, 1);
+
+        // make sure arraylist exists & is empty
+        rawJiggleData = new ArrayList<Double>();
+        rawJiggleData.clear();
+
+        // and then we jiggle;
+
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.FORWARD);
+        int position = (int) (2*deg * 12.05)*-1; // jeet wtf is this code?
+        settargetposition(fl, -position); // and then you negate the negative? WTF you're wasting clock cycles!
+        settargetposition(bl, -position);
+        settargetposition(br, position);
+        settargetposition(fr, position);
+
+        double last_data = 0;
+       // double main_distance;
+        while (fl.isBusy()){ //TODO add an exception-throwing thread
+            double d = distance_sensor.getDistance(DistanceUnit.CM);
+            if (last_data == 0){last_data = d;}
+            double difference = Math.abs(d-last_data);
+            if (gamepad1.dpad_left){break;}//also add if any of the sticks are .5<Math.abs(stickvalue)
+            if (difference > 0.2*d){
+                fl.setPower(0);
+                fr.setPower(0);
+                bl.setPower(0);
+                br.setPower(0);
+                telemetry.addLine("Now: "+d);
+                telemetry.addLine("Previous: "+last_data);
+           //     main_distance = last_data;
+                move(0, 0, 0.5*deg, 1783 * (2/2.05), 12.05, 1);
+
+                if (gamepad1.dpad_left){break;}
+
+                double m_distance_prime = distance_sensor.getDistance(DistanceUnit.CM)-8;;
+                move(0, m_distance_prime, 0, 1783 * (2/2.05), 12.05, 1);
+                break;
+
+                // then pick up or drop cone
+
+
+                //this is the distance of the pole/cone when outside of the sensors fov
+                //then rotate half of fov radius- not just the sensor
+                // if the whole robot moves
+                // then move forward sqrt((main_distance)^2-(r2+r2﹣2r^2cosγ)) where y is 0.5 of FOV radius, and r is the distance of the sensor to its center of rotation
+                // -- this value can be a constant we trial and error
+                //
+                //
+            }
+            last_data = d;
+
+
+            rawJiggleData.add(distance_sensor.getDistance(DistanceUnit.CM));
+
+
+
+        }
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+
+
+
+
+    }
+
 }
