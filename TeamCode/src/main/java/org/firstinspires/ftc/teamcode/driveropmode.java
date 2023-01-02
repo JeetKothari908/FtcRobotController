@@ -41,7 +41,7 @@ public class driveropmode extends LinearOpMode {
             if(gamepad1.a){robot.extend(1);}
             if(gamepad1.x){robot.extend(2);}
             if(gamepad1.y){robot.extend(3);}
-            if(gamepad1.right_bumper){robot.jiggle_and_move(25);}
+            if(gamepad1.right_bumper){robot.scan();}
             telemetry.update();
         }
     }

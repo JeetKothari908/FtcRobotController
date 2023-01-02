@@ -166,6 +166,18 @@ public class righterauto extends LinearOpMode {
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(1.0);
     }
+    void mover(){
+        settargetpositioner(fl, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+        settargetpositioner(fr, position);
+        while (fl.isBusy()||fr.isBusy()||br.isBusy()||bl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+
+    }
 
     void moveforward(double meters){
 
@@ -175,16 +187,7 @@ public class righterauto extends LinearOpMode {
         br.setDirection(DcMotorSimple.Direction.FORWARD);
 
         int position = (int) (meters * moveconstant)*-1;
-
-        settargetpositioner(fl, position);
-        settargetpositioner(fr, position);
-        settargetpositioner(bl, position);
-        settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
+        mover();
     }
     void movebackward(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -193,17 +196,7 @@ public class righterauto extends LinearOpMode {
         br.setDirection(DcMotorSimple.Direction.REVERSE);
 
         int position = (int) (meters * moveconstant)*-1;
-
-        settargetpositioner(fl, position);
-        settargetpositioner(br, position);
-        settargetpositioner(bl, position);
-        settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
-
+        mover();
     }
     void strafeleft(double meters){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -212,17 +205,7 @@ public class righterauto extends LinearOpMode {
         br.setDirection(DcMotorSimple.Direction.REVERSE);
 
         int position = (int) (meters * strafeconstant)*-1;
-
-        settargetpositioner(fl, position);
-        settargetpositioner(fr, position);
-        settargetpositioner(bl, position);
-        settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
-
+        mover();
 
     }
     void straferight(double meters){
@@ -232,53 +215,30 @@ public class righterauto extends LinearOpMode {
         br.setDirection(DcMotorSimple.Direction.FORWARD);
 
         int position = (int) (meters * strafeconstant)*-1;
-        settargetpositioner(fl, position);
-        settargetpositioner(fr, position);
-        settargetpositioner(bl, position);
-        settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
+        mover();
 
 
     }
     void turnright(int degrees){
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fl.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        bl.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
         int position = (int) (degrees * turnconstant)*-1;
-        settargetpositioner(fl, -position);
-        settargetpositioner(bl, -position);
-        settargetpositioner(br, position);
-        settargetpositioner(fr, position);
-        while (fl.isBusy()){sleep(1);}
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
+        settargetpositioner(fl, position);
+        mover();
 
     }
     void turnleft(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        fr.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
 
         int position = (int) (degrees * turnconstant)*-1;
-        settargetpositioner(fl, position);
-        settargetpositioner(bl, position);
-        settargetpositioner(br, -position);
-        settargetpositioner(fr, -position);
-        while (fl.isBusy()){sleep(1);}
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
-
+        mover();
     }
+
     String colortestor() {
         if (color_sensor.green() > color_sensor.blue() && color_sensor.red() > color_sensor.blue()) {
             return "yellow";
