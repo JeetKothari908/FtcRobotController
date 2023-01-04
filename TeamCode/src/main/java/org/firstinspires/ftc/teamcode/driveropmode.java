@@ -41,9 +41,9 @@ public class driveropmode extends LinearOpMode {
             telemetry.addData("bl", robot.bl.getCurrentPosition());
 
             robot.move();
-            if(gamepad1.right_trigger > 0.5){robot.grabber.setPosition(0.595);
+            if(gamepad1.right_trigger > 0.5){robot.grabber.setPosition(0.550);
             }
-            if(gamepad1.left_trigger > 0.5){robot.grabber.setPosition(0.395);
+            if(gamepad1.left_trigger > 0.5){robot.grabber.setPosition(0.295);
             }
             if(gamepad1.b){robot.extend(0);}
             if(gamepad1.a){robot.extend(1);}
@@ -51,13 +51,16 @@ public class driveropmode extends LinearOpMode {
             if(gamepad1.y){robot.extend(3);}
             if(gamepad1.right_bumper){
                 double d = robot.distance_sensor.getDistance(DistanceUnit.CM);
-                if(d<30){
-                    telemetry.addLine("dist: "+d);
-                    telemetry.update();
-                    // a lot of trust is put into the driver that they remember to raise the ext. and close claw b4 running this
-                    robot.move(0,(d-15)/100,0,.3);
+                if(d<55) {
+                    robot.move(-.05, (d - 15) / 100, 0, .5);
+                        while (robot.fl.isBusy() || robot.fr.isBusy() || robot.bl.isBusy() || robot.br.isBusy()) {sleep(1);}
+//                    robot.move(-.1, .05, 0, .5);
+//                    while (robot.fl.isBusy() || robot.fr.isBusy() || robot.bl.isBusy() || robot.br.isBusy()) {sleep(10);}
 
-                    while(robot.fl.isBusy()||robot.fr.isBusy()||robot.bl.isBusy()||robot.br.isBusy()){sleep(10);}
+                    robot.fl.setPower(0); // cleaning up after the scan is done
+                    robot.fr.setPower(0);
+                    robot.bl.setPower(0);
+                    robot.br.setPower(0);
 
                     robot.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // so the driver can actually drive again
                     robot.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
