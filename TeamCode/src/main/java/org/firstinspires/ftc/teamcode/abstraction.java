@@ -1,33 +1,25 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.ColorSensor;
+import static java.lang.Thread.sleep;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class abstraction {
 
-    // Declare OpMode members.
-    private final ElapsedTime runtime = new ElapsedTime();
 
-    public double coneLocationFromOrigin;
-    //TODO average all values and find values that are proven statistically different through chi^2, (bio reference)
-    //TODO average location of continuous, statistically different values to get the middle of a pole and the distance to it.
-    //TODO implement aiden's mathematics
-
-    public ArrayList<Double> rawJiggleData;
+    public ArrayList<Double> rawJiggleData= new ArrayList<>();
+    public ArrayList<Integer> frontleft= new ArrayList<>();
+    public ArrayList<Integer> frontright= new ArrayList<>();
+    public ArrayList<Integer> backleft= new ArrayList<>();
+    public ArrayList<Integer> backright= new ArrayList<>();
 
     public Servo grabber;
 
@@ -36,22 +28,20 @@ public class abstraction {
     public DcMotor bl;
     public DcMotor br;
     public DcMotor E;
-    public ColorSensor color_sensor;
     public DistanceSensor distance_sensor;
-
+    double moveconstant = 1739.51219512;
+    double motorrotation = 538;
+    double turnconstant = 12.05; // per degree, so its rly small
+    double strafeconstant = 2018.37022547; //untested, need to test
     public HardwareMap hardwareMap;
     public Gamepad gamepad1;
 
     public Telemetry telemetry;
 
-    public boolean blockDriver=false; // bad if set to true under circumstances beyond nominal operation
-
     public abstraction(HardwareMap hard, Gamepad g){
         hardwareMap=hard;
         gamepad1=g;
     }
-
-
 
     public void defineAndStart(){
 
@@ -115,7 +105,6 @@ public class abstraction {
         }
     }
 
-
     void move(){
         double horizontal = -gamepad1.left_stick_x*.5;   // this works so dont question it
         double vertical = gamepad1.left_stick_y*.5;
@@ -127,13 +116,16 @@ public class abstraction {
         br.setPower(Range.clip((vertical + horizontal - turn), -1, 1));
     }
 
-    void move(double X, double Y, double T, double U, double TU, double P) {
-        // make sure to set motor mode to RUN_TO_POSITION and give it power!
+    void move(double X, double Y, double T, double P) {
+        fl.setDirection(DcMotor.Direction.REVERSE); // jeet messes with these so i have to set them back here
+        fr.setDirection(DcMotor.Direction.FORWARD);
+        bl.setDirection(DcMotor.Direction.REVERSE);
+        br.setDirection(DcMotor.Direction.FORWARD);
 
-        fl.setTargetPosition(fl.getCurrentPosition() + (int) (U * (Y + X)));//
-        fr.setTargetPosition(fl.getCurrentPosition() + (int) (U * (Y - X)));//
-        bl.setTargetPosition(fl.getCurrentPosition() + (int) (U * (Y - X)));//
-        br.setTargetPosition(fl.getCurrentPosition() + (int) (U * (Y + X)));//
+        fl.setTargetPosition(fl.getCurrentPosition()+(int) ((-Y*moveconstant) + (X*strafeconstant)  + (turnconstant * T)));
+        fr.setTargetPosition(fr.getCurrentPosition()+(int) ((-Y*moveconstant) + (-X*strafeconstant) + (turnconstant * -T)));
+        bl.setTargetPosition(bl.getCurrentPosition()+(int) ((-Y*moveconstant) + (-X*strafeconstant) + (turnconstant * T)));
+        br.setTargetPosition(br.getCurrentPosition()+(int) ((-Y*moveconstant) + (X*strafeconstant)  + (turnconstant * -T)));
 
         fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -145,99 +137,67 @@ public class abstraction {
         bl.setPower(P);
         br.setPower(P);
 
-        fl.setTargetPosition(fl.getCurrentPosition() + (int) (TU * T));
-        fr.setTargetPosition(fl.getCurrentPosition() + (int) (TU * -T));
-        bl.setTargetPosition(fl.getCurrentPosition() + (int) (TU * T));
-        br.setTargetPosition(fl.getCurrentPosition() + (int) (TU * -T));
+    }
 
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    void scan() throws InterruptedException {
+
+        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        move(0,0,15,1);
+        while(fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
+
+        rawJiggleData.clear(); // make sure old data is gone
+        frontleft.clear();
+        frontright.clear();
+        backright.clear();
+        backleft.clear();
+
+
+        move(0,0,-30,1);
+
+        while(fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){
+
+            if(distance_sensor.getDistance(DistanceUnit.CM)!=819.0){ //checks if the data returned is diff from DS null value of 819
+                rawJiggleData.add(distance_sensor.getDistance(DistanceUnit.CM)); // adds the distance to a list
+                telemetry.addLine("dist: "+distance_sensor.getDistance(DistanceUnit.CM)); // sends to phone
+                frontleft.add(fl.getCurrentPosition()); // jeets idea of storing all 4 motor positions
+                frontright.add(fr.getCurrentPosition());
+                backleft.add(bl.getCurrentPosition());
+                backright.add(br.getCurrentPosition());
+            }
+        }
+
+        double lowestDist = 819; // makes sure any and all data in the list is less than the starting value and will be in the list
+
+        if(!rawJiggleData.isEmpty()){ // accounts for edge case where all values are 819.0
+
+            for(double d:rawJiggleData){ // finds lowest value in list
+                if(d<lowestDist){lowestDist=d;}
+            }
+            telemetry.addLine(""+lowestDist);
+            settargetpositioner(fl, -frontleft.get(rawJiggleData.indexOf(lowestDist))); // goes there
+            settargetpositioner(bl, -backleft.get(rawJiggleData.indexOf(lowestDist)));
+            settargetpositioner(br, backright.get(rawJiggleData.indexOf(lowestDist)));
+            settargetpositioner(fr, frontright.get(rawJiggleData.indexOf(lowestDist)));
+        }
+        if(lowestDist!=819) // makes sure it doesnt crash into my wall again
+            move(0, (lowestDist/100) - .08, 0, 1); // move to be 8 cm from the pole
+
+        while (fl.isBusy()){} // lets the motors do what they have to, shouldnt do anything if prev line is false
+
+        fl.setPower(0); // cleaning up after the scan is done
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // so the driver can actually drive again
         fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
-    }
-
-    void settargetposition(DcMotor motor, int position){
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor.setTargetPosition(position);
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(1.0);
-    }
-
-
-    public void jiggle(double deg) {
-        blockDriver=true;
-        move(0, 0, -deg, 0, 12.05, 1);
-
-        // make sure arraylist exists & is empty
-        rawJiggleData = new ArrayList<Double>();
-        rawJiggleData.clear();
-
-        // and then we jiggle;
-
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
-        int position = (int) (2*deg * 12.05)*-1; // jeet wtf is this code?
-        settargetposition(fl, -position); // and then you negate the negative? WTF you're wasting clock cycles!
-        settargetposition(bl, -position);
-        settargetposition(br, position);
-        settargetposition(fr, position);
-        while (fl.isBusy()){rawJiggleData.add(distance_sensor.getDistance(DistanceUnit.CM));}
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
-
-
-
-
-        blockDriver=false;
-    }
-
-    void scan(){
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.REVERSE);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        int position = (int) (15 * 12.05)*-1;
-        settargetpositioner(fl, position);
-        settargetpositioner(bl, position);
-        settargetpositioner(br, position);
-        settargetpositioner(fr, position);
-        rawJiggleData.clear();
-        while (fl.isBusy()||fr.isBusy()||br.isBusy()||bl.isBusy())
-        {
-            rawJiggleData.add(distance_sensor.getDistance(DistanceUnit.CM));
-        }
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
-
-        double prevlow = rawJiggleData.get(0);
-
-        double smallestDist;
-
-        for(Double d: rawJiggleData){
-            if(d<prevlow){prevlow=d;}
-        }
-
-        smallestDist=prevlow;
-        double lowestIndex = rawJiggleData.indexOf(prevlow);
-
-        move(0,0,(int) ((((rawJiggleData.size()-1)-lowestIndex)/(rawJiggleData.size()-1))*15),1,12.05,1);
-
-
-
-
+        telemetry.addLine("done");
+        telemetry.update();
     }
 
     void settargetpositioner(DcMotor motor, int position){
@@ -245,6 +205,6 @@ public class abstraction {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setTargetPosition(position);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(1.0);
+        motor.setPower(.30);
     }
 }
