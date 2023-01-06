@@ -84,13 +84,13 @@ public class abs {
 
                 break;
             case 1:
-                E.setTargetPosition(997);
+                E.setTargetPosition(1100);
                 E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 E.setPower(1);
 
                 break;
             case 2:
-                E.setTargetPosition(1994);
+                E.setTargetPosition(2300);
                 E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 E.setPower(1);
 

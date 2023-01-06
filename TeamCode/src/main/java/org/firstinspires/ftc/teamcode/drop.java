@@ -32,38 +32,17 @@ public class drop extends LinearOpMode {
         runtime.reset();
 
         while (opModeIsActive()) {
-            telemetry.addData("distance",robot.distance_sensor.getDistance(DistanceUnit.CM));
-            telemetry.addData("fr", robot.fr.getCurrentPosition());
-            telemetry.addData("br", robot.br.getCurrentPosition());
-            telemetry.addData("fl", robot.fl.getCurrentPosition());
-            telemetry.addData("bl", robot.bl.getCurrentPosition());
 
-            if(!gamepad2.right_bumper) {
-                robot.move(); // this is to ensure that the joystick in idle wont slow the scan
-            }
+            robot.move();
 
-            if(gamepad1.right_trigger > 0.5){robot.grabber.setPosition(0.550);
+            if(gamepad1.dpad_right){robot.grabber.setPosition(0.600);
             }
-            if(gamepad1.left_trigger > 0.5){robot.grabber.setPosition(0.295);
+            if(gamepad1.dpad_left){robot.grabber.setPosition(0.290);
             }
             if(gamepad1.b){robot.extend(0);}
             if(gamepad1.a){robot.extend(1);}
             if(gamepad1.x){robot.extend(2);}
             if(gamepad1.y){robot.extend(3);}
-
-            if(gamepad1.right_bumper){
-                double d=robot.distance_sensor.getDistance(DistanceUnit.CM);
-                if(d<40){
-                    robot.move(.03,(d-15)/100,0,.4);
-                    while (robot.fl.isBusy() || robot.fr.isBusy() || robot.bl.isBusy() || robot.br.isBusy()) {sleep(1);}
-                    robot.grabber.setPosition(0.295);
-                }
-            }else{
-                robot.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                robot.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                robot.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                robot.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            }
         }
     }
 }
