@@ -17,21 +17,19 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp(name="THE DRIVER OP", group="Driver OP")
-public class driveropmode extends LinearOpMode {
+public class drop extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        abstraction robot = new abstraction(hardwareMap, gamepad1);
+        abs robot = new abs(hardwareMap, gamepad1);
 
         robot.defineAndStart();
         robot.telemetry=telemetry;
         waitForStart();
         runtime.reset();
-
-        boolean blockDriver=false;
 
         while (opModeIsActive()) {
             telemetry.addData("distance",robot.distance_sensor.getDistance(DistanceUnit.CM));
@@ -40,7 +38,10 @@ public class driveropmode extends LinearOpMode {
             telemetry.addData("fl", robot.fl.getCurrentPosition());
             telemetry.addData("bl", robot.bl.getCurrentPosition());
 
-            robot.move();
+            if(!gamepad2.right_bumper) {
+                robot.move(); // this is to ensure that the joystick in idle wont slow the scan
+            }
+
             if(gamepad1.right_trigger > 0.5){robot.grabber.setPosition(0.550);
             }
             if(gamepad1.left_trigger > 0.5){robot.grabber.setPosition(0.295);
@@ -49,7 +50,52 @@ public class driveropmode extends LinearOpMode {
             if(gamepad1.a){robot.extend(1);}
             if(gamepad1.x){robot.extend(2);}
             if(gamepad1.y){robot.extend(3);}
+
             if(gamepad1.right_bumper){
+                double d=robot.distance_sensor.getDistance(DistanceUnit.CM);
+                if(d<40){
+                    robot.move(.03,(d-15)/100,0,.4);
+                    while (robot.fl.isBusy() || robot.fr.isBusy() || robot.bl.isBusy() || robot.br.isBusy()) {sleep(1);}
+                    robot.grabber.setPosition(0.295);
+                }
+            }else{
+                robot.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+        }
+    }
+}
+/*
+if(gamepad1.dpad_left){
+                while(gamepad1.dpad_left && robot.distance_sensor.getDistance(DistanceUnit.CM)>40){
+                    robot.move(0,0,1,.3);
+                }
+                if(gamepad1.dpad_left){
+                    double d=robot.distance_sensor.getDistance(DistanceUnit.CM);
+                    if(d<40&&d>10){
+                        robot.move(.05, (d-8)/100, 0, .3);
+                    }
+                }
+            }
+            if(gamepad1.dpad_right){
+                while(gamepad1.dpad_right && robot.distance_sensor.getDistance(DistanceUnit.CM)>40){
+                    robot.move(0,0,-1,.3);
+                }
+                if(gamepad1.dpad_right){
+                    double d=robot.distance_sensor.getDistance(DistanceUnit.CM);
+                    if(d<40&&d>10){
+                        robot.move(-.05, (d-8)/100, 0, .3);
+                    }
+                }
+            }
+*/
+
+
+
+/*
+if(gamepad1.right_bumper){
                 double d = robot.distance_sensor.getDistance(DistanceUnit.CM);
                 if(d<55) {
                     robot.move(-.05, (d - 15) / 100, 0, .5);
@@ -67,7 +113,4 @@ public class driveropmode extends LinearOpMode {
                     robot.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                     robot.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 }
-            }
-        }
-    }
-}
+*/

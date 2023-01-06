@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.util.ArrayList;
 
-public class abstraction {
+public class abs {
 
 
     public ArrayList<Double> rawJiggleData= new ArrayList<>();
@@ -38,7 +38,7 @@ public class abstraction {
 
     public Telemetry telemetry;
 
-    public abstraction(HardwareMap hard, Gamepad g){
+    public abs(HardwareMap hard, Gamepad g){
         hardwareMap=hard;
         gamepad1=g;
     }
