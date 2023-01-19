@@ -25,7 +25,8 @@ public class drop extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         abs robot = new abs(hardwareMap, gamepad1);
-
+        boolean fresh = true;
+        double powersetter = 1.0;
         robot.defineAndStart();
         robot.telemetry=telemetry;
         waitForStart();
@@ -37,7 +38,21 @@ public class drop extends LinearOpMode {
             telemetry.addData("br", robot.br.getCurrentPosition());
             telemetry.addData("fl", robot.fl.getCurrentPosition());
             telemetry.addData("bl", robot.bl.getCurrentPosition());
-
+            telemetry.addData("powersetter", powersetter);
+            if (gamepad1.dpad_left && fresh){
+                fresh=false;
+                if (powersetter == 0.5){
+                    powersetter = 1.0;
+                }
+                else{
+                    powersetter = 0.5;
+                }
+                }
+            }
+            powersetter =
+            if(!gamepad1.dpad_left){
+                fresh=true;
+            }
             if(!gamepad2.right_bumper) {
                 robot.move(); // this is to ensure that the joystick in idle wont slow the scan
             }
@@ -66,7 +81,7 @@ public class drop extends LinearOpMode {
             }
         }
     }
-}
+
 /*
 if(gamepad1.dpad_left){
                 while(gamepad1.dpad_left && robot.distance_sensor.getDistance(DistanceUnit.CM)>40){

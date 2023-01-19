@@ -49,7 +49,7 @@ public class Robot {
 
     public boolean usesArm = false;
     public boolean usesExt = true;
-
+    double powersetterr = 1.0;
     public Gamepad driverGamepad;
 
     public Robot(Gamepad g, HardwareMap h, String configuration) {
@@ -94,10 +94,10 @@ public class Robot {
         double turn = driverGamepad.right_stick_x * DTmult;
         double extenderPosCM = extender.getCurrentPosition() * extenderCmMultiple + driverGamepad.right_stick_y * extenderCmMultiple * extendSpeed;
         //the god code. we do not change this. too much work to trial&error
-        FL.setPower(Range.clip((vertical + horizontal - turn), -1, 1));
-        FR.setPower(Range.clip((vertical - horizontal + turn), -1, 1));
-        BL.setPower(Range.clip((vertical - horizontal - turn), -1, 1));
-        BR.setPower(Range.clip((vertical + horizontal + turn), -1, 1));
+        FL.setPower(Range.clip((vertical + horizontal - turn), -1, 1)*powersetterr);
+        FR.setPower(Range.clip((vertical - horizontal + turn), -1, 1)*powersetterr);
+        BL.setPower(Range.clip((vertical - horizontal - turn), -1, 1)*powersetterr);
+        BR.setPower(Range.clip((vertical + horizontal + turn), -1, 1)*powersetterr);
 
         extender.setTargetPosition((int) (extenderPosCM / extenderPosCM));
     }
