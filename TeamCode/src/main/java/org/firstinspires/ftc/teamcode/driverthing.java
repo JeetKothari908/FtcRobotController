@@ -18,7 +18,7 @@ public class driverthing extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
     public Servo grabber;
-    double powersetter = 1;
+    double powersetterr = 1;
 
     public DcMotor fl;
     public DcMotor fr;
@@ -70,11 +70,11 @@ public class driverthing extends LinearOpMode {
 
             move();
             if (gamepad1.dpad_left){
-                if (powersetter == 0.5){
-                    powersetter = 1.0;
+                if (powersetterr == 0.5){
+                    powersetterr = 1.0;
                 }
-                if (powersetter == 1.0){
-                    powersetter = 0.5;
+                if (powersetterr == 1.0){
+                    powersetterr = 0.5;
                 }
             }
 /*
@@ -154,10 +154,10 @@ public class driverthing extends LinearOpMode {
         double vertical = gamepad1.left_stick_y*.5;
         double turn = -gamepad1.right_stick_x*2/3;
         //  E.setPower(gamepad1.left_stick_y);
-        fl.setPower((Range.clip((vertical + horizontal + turn), -1, 1))*powersetter);
-        fr.setPower((Range.clip((vertical - horizontal - turn), -1, 1))*powersetter);
-        bl.setPower((Range.clip((vertical - horizontal + turn), -1, 1))*powersetter);
-        br.setPower((Range.clip((vertical + horizontal - turn), -1, 1))*powersetter);
+        fl.setPower((Range.clip((vertical + horizontal + turn), -1, 1))*powersetterr);
+        fr.setPower((Range.clip((vertical - horizontal - turn), -1, 1))*powersetterr);
+        bl.setPower((Range.clip((vertical - horizontal + turn), -1, 1))*powersetterr);
+        br.setPower((Range.clip((vertical + horizontal - turn), -1, 1))*powersetterr);
     }
 
     void move(double X, double Y, double T, double U, double TU, double P){
