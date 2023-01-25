@@ -49,7 +49,6 @@ public class drop extends LinearOpMode {
                 }
                 }
             }
-            powersetter =
             if(!gamepad1.dpad_left){
                 fresh=true;
             }

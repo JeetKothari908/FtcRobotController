@@ -97,6 +97,7 @@ public class driverthing extends LinearOpMode {
             telemetry.addData("fr",fr.getPower());
             telemetry.addData("bl",bl.getPower());
             telemetry.addData("e",E.getCurrentPosition());
+            telemetry.addData("grab", grabber.getPosition());
             telemetry.update();
         }
     }
