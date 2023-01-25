@@ -39,17 +39,14 @@ public class drop extends LinearOpMode {
             telemetry.addData("fl", robot.fl.getCurrentPosition());
             telemetry.addData("bl", robot.bl.getCurrentPosition());
             telemetry.addData("powersetter", powersetter);
-            if (gamepad1.dpad_left && fresh){
-                fresh=false;
-                if (powersetter == 0.5){
+            if (gamepad1.dpad_left && fresh) {
+                fresh = false;
+                if (powersetter == 0.5) {
                     powersetter = 1.0;
-                }
-                else{
+                } else {
                     powersetter = 0.5;
                 }
-                }
             }
-            powersetter =
             if(!gamepad1.dpad_left){
                 fresh=true;
             }
@@ -80,7 +77,7 @@ public class drop extends LinearOpMode {
                 robot.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
         }
-    }
+    }}
 
 /*
 if(gamepad1.dpad_left){
