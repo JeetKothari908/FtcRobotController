@@ -33,7 +33,6 @@ public class drop extends LinearOpMode {
         runtime.reset();
 
         while (opModeIsActive()) {
-            telemetry.addData("distance",robot.distance_sensor.getDistance(DistanceUnit.CM));
             telemetry.addData("fr", robot.fr.getCurrentPosition());
             telemetry.addData("br", robot.br.getCurrentPosition());
             telemetry.addData("fl", robot.fl.getCurrentPosition());
@@ -64,20 +63,6 @@ public class drop extends LinearOpMode {
             if(gamepad1.a){robot.extend(1);}
             if(gamepad1.x){robot.extend(2);}
             if(gamepad1.y){robot.extend(3);}
-
-            if(gamepad1.right_bumper){
-                double d=robot.distance_sensor.getDistance(DistanceUnit.CM);
-                if(d<40){
-                    robot.move(.03,(d-15)/100,0,.4);
-                    while (robot.fl.isBusy() || robot.fr.isBusy() || robot.bl.isBusy() || robot.br.isBusy()) {sleep(1);}
-                    robot.grabber.setPosition(0.295);
-                }
-            }else{
-                robot.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                robot.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                robot.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                robot.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            }
         }
     }
 

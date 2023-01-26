@@ -28,7 +28,6 @@ public class abs {
     public DcMotor bl;
     public DcMotor br;
     public DcMotor E;
-    public DistanceSensor distance_sensor;
     double moveconstant = 1739.51219512;
     double motorrotation = 538;
     double turnconstant = 12.05; // per degree, so its rly small
@@ -50,7 +49,6 @@ public class abs {
         bl= hardwareMap.get(DcMotor.class, "BL");
         br= hardwareMap.get(DcMotor.class, "BR");
 
-        distance_sensor = hardwareMap.get(DistanceSensor.class, "DS");
 
         E = hardwareMap.get(DcMotor.class, "E");
 
@@ -160,14 +158,7 @@ public class abs {
 
         while(fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){
 
-            if(distance_sensor.getDistance(DistanceUnit.CM)!=819.0){ //checks if the data returned is diff from DS null value of 819
-                rawJiggleData.add(distance_sensor.getDistance(DistanceUnit.CM)); // adds the distance to a list
-                telemetry.addLine("dist: "+distance_sensor.getDistance(DistanceUnit.CM)); // sends to phone
-                frontleft.add(fl.getCurrentPosition()); // jeets idea of storing all 4 motor positions
-                frontright.add(fr.getCurrentPosition());
-                backleft.add(bl.getCurrentPosition());
-                backright.add(br.getCurrentPosition());
-            }
+
         }
 
         double lowestDist = 819; // makes sure any and all data in the list is less than the starting value and will be in the list

@@ -20,9 +20,6 @@ public class Robot {
     public DcMotor BL;
     public DcMotor BR;
 
-    // sensors
-    public DistanceSensor DS;
-
     // autonomous strafe constants (trial & error so that units are meters in autonomous)
     public double AYmult;
     public double AXmult;
