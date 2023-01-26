@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import static java.lang.Thread.sleep;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -137,65 +136,11 @@ public class abs {
 
     }
 
-    void scan() throws InterruptedException {
-
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        move(0,0,15,1);
-        while(fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
-
-        rawJiggleData.clear(); // make sure old data is gone
-        frontleft.clear();
-        frontright.clear();
-        backright.clear();
-        backleft.clear();
-
-
-        move(0,0,-30,1);
-
-        while(fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){
-
-
-        }
-
-        double lowestDist = 819; // makes sure any and all data in the list is less than the starting value and will be in the list
-
-        if(!rawJiggleData.isEmpty()){ // accounts for edge case where all values are 819.0
-
-            for(double d:rawJiggleData){ // finds lowest value in list
-                if(d<lowestDist){lowestDist=d;}
-            }
-            telemetry.addLine(""+lowestDist);
-            settargetpositioner(fl, -frontleft.get(rawJiggleData.indexOf(lowestDist))); // goes there
-            settargetpositioner(bl, -backleft.get(rawJiggleData.indexOf(lowestDist)));
-            settargetpositioner(br, backright.get(rawJiggleData.indexOf(lowestDist)));
-            settargetpositioner(fr, frontright.get(rawJiggleData.indexOf(lowestDist)));
-        }
-        if(lowestDist!=819) // makes sure it doesnt crash into my wall again
-            move(0, (lowestDist/100) - .08, 0, 1); // move to be 8 cm from the pole
-
-        while (fl.isBusy()){} // lets the motors do what they have to, shouldnt do anything if prev line is false
-
-        fl.setPower(0); // cleaning up after the scan is done
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // so the driver can actually drive again
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        telemetry.addLine("done");
-        telemetry.update();
-    }
-
-    void settargetpositioner(DcMotor motor, int position){
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor.setTargetPosition(position);
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(.30);
-    }
+//    void settargetpositioner(DcMotor motor, int position){
+//        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        motor.setTargetPosition(position);
+//        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        motor.setPower(.30);
+//    }
 }
