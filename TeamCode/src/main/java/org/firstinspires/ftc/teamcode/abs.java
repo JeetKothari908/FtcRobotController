@@ -57,7 +57,6 @@ public class abs {
         fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        E.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -75,10 +74,11 @@ public class abs {
 
         switch (position) {
             case 0:
-                E.setTargetPosition(0);
-                E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                E.setPower(1);
-
+                if(E.getCurrentPosition()<=10){E.setPower(0);}else {
+                    E.setTargetPosition(0);
+                    E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    E.setPower(1);
+                }
                 break;
             case 1:
                 E.setTargetPosition(1300);
@@ -111,29 +111,6 @@ public class abs {
         fr.setPower(Range.clip((vertical - horizontal - turn), -1, 1));
         bl.setPower(Range.clip((vertical - horizontal + turn), -1, 1));
         br.setPower(Range.clip((vertical + horizontal - turn), -1, 1));
-    }
-
-    void move(double X, double Y, double T, double P) {
-        fl.setDirection(DcMotor.Direction.REVERSE); // jeet messes with these so i have to set them back here
-        fr.setDirection(DcMotor.Direction.FORWARD);
-        bl.setDirection(DcMotor.Direction.REVERSE);
-        br.setDirection(DcMotor.Direction.FORWARD);
-
-        fl.setTargetPosition(fl.getCurrentPosition()+(int) ((-Y*moveconstant) + (X*strafeconstant)  + (turnconstant * T)));
-        fr.setTargetPosition(fr.getCurrentPosition()+(int) ((-Y*moveconstant) + (-X*strafeconstant) + (turnconstant * -T)));
-        bl.setTargetPosition(bl.getCurrentPosition()+(int) ((-Y*moveconstant) + (-X*strafeconstant) + (turnconstant * T)));
-        br.setTargetPosition(br.getCurrentPosition()+(int) ((-Y*moveconstant) + (X*strafeconstant)  + (turnconstant * -T)));
-
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        fl.setPower(P);
-        fr.setPower(P);
-        bl.setPower(P);
-        br.setPower(P);
-
     }
 
 //    void settargetpositioner(DcMotor motor, int position){

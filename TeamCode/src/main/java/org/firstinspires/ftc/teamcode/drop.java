@@ -28,6 +28,9 @@ public class drop extends LinearOpMode {
         robot.defineAndStart();
         robot.telemetry = telemetry;
         waitForStart();
+
+        robot.E.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         runtime.reset();
 
         while (opModeIsActive()) {
@@ -43,7 +46,7 @@ public class drop extends LinearOpMode {
                 robot.grabber.setPosition(0.550);
             }
             if (gamepad1.left_trigger > 0.5) {
-                robot.grabber.setPosition(0.295);
+                robot.grabber.setPosition(.31);
             }
             if (gamepad1.b) {
                 robot.extend(0);

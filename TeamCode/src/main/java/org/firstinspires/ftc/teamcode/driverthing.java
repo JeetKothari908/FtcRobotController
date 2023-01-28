@@ -120,10 +120,13 @@ public class driverthing extends LinearOpMode {
 
         switch (position) {
             case 0:
-                E.setTargetPosition(0);
-                E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                E.setPower(0.75);
-
+                if(E.getCurrentPosition()>10) {
+                    E.setTargetPosition(0);
+                    E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    E.setPower(0.75);
+                }else{
+                    E.setPower(0);
+                }
                 break;
             case 1:
                 E.setTargetPosition(1300);
