@@ -17,49 +17,23 @@ public class autotemplate extends LinearOpMode {
 
 
 
-    //               )\         O_._._._A_._._._O         /(
-    //                \`--.___,'=================`.___,--'/
-    //                 \`--._.__                 __._,--'/
-    //                   \  ,. l`~~~~~~~~~~~~~~~'l ,.  /
-    //       __            \||(_)!_!_!_.-._!_!_!(_)||/            __
-    //       \\`-.__        ||_|____!!_|;|_!!____|_||        __,-'//
-    //        \\    `==---='// Declare OpMode members.`=---=='    //
-    /*    /**/private final ElapsedTime runtime = new ElapsedTime();/**/
-    //         \  ,.`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',.  /
-    //           \||  ____,-------._,-------._,-------.____  ||/
-    //            ||\|___!`======="!`======="!`======="!___|/||
-    //            || |---||--------||-| | |-!!--------||---| ||
-    //  __O_____O_ll_lO_____O_____O|| |'|'| ||O_____O_____Ol_ll_O_____O__
-    //  o H o o H o o H o o H o o |-----------| o o H o o H o o H o o H o
-    // ___H_____H_____H_____H____O =========== O____H_____H_____H_____H___
-    //                          /|=============|\
-    //()______()______()______() '==== +-+ ====' ()______()______()______()
-    //||{_}{_}||{_}{_}||{_}{_}/| ===== |_| ===== |\{_}{_}||{_}{_}||{_}{_}||
-    //||      ||      ||     / |==== s(   )s ====| \     ||      ||      ||
-    //======================()  =================  ()======================
-    //----------------------/| ------------------- |\----------------------
-    //                     / |---------------------| \
-    //-'--'--'           ()  '---------------------'  ()
-    //                   /| ------------------------- |\    --'--'--'
-    //       --'--'     / |---------------------------| \    '--'
-    //                ()  |___________________________|  ()           '--'-
-    //  --'-          /| _______________________________  |\
-    // --' gpyy      / |__________________________________| \
+    private final ElapsedTime runtime = new ElapsedTime();
 
     public Servo grabber;
 
     int position = 180;
-    double constanter = 0.0;
+    double constanter = 0.0; // what this for?
     public DcMotor fl;
     public DcMotor fr;
     public DcMotor bl;
     public DcMotor br;
     public DcMotor E;
     public ColorSensor color_sensor;
-    double moveconstant = 1783 * (2/2.05); //WORKS
+    double moveconstant = 1739.51219512; //WORKS
     double motorrotation = 538; //WORKS
     double turnconstant = 12.05; // per degree, so its rly small
-    double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05); //untested, need to test
+    double strafeconstant = 2018.37022547; //untested, need to test
+    // 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05) <- jeet wtf is this? use a decimal
     String color = "";
 
     @Override
@@ -272,7 +246,7 @@ public class autotemplate extends LinearOpMode {
         }
     }
     void openclaw(){
-        grabber.setPosition(.295);
+        grabber.setPosition(.395);
     }
     void closeclaw(){
         grabber.setPosition(0.0);
