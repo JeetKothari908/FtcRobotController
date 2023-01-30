@@ -79,20 +79,9 @@ public class driverthing extends LinearOpMode {
                     powersetterr = 0.5;
                 }
                 beans=false;
-            }else{
-                powersetterr=1;
-                beans=true;
-            }
-
-            while (gamepad1.left_bumper)
-            {
-                if(E.getCurrentPosition()>10) {
-                    E.setTargetPosition(E.getCurrentPosition()-5);
-                    E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    E.setPower(0.75);
-                }else{
-                    E.setPower(0);
-                }
+            }else {
+                powersetterr = 1;
+                beans = true;
             }
 
             while (gamepad1.right_bumper)
@@ -100,7 +89,9 @@ public class driverthing extends LinearOpMode {
                 if(E.getCurrentPosition()<2980) {
                     E.setTargetPosition(E.getCurrentPosition()+5);
                 }
-            }while (gamepad1.left_bumper)
+            }
+
+            while (gamepad1.left_bumper)
             {
                 if(E.getCurrentPosition()>20) {
                     E.setTargetPosition(E.getCurrentPosition()-5);
