@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -69,7 +70,9 @@ public class driverthing extends LinearOpMode {
         while (opModeIsActive()) {
 
             move();
-            if (gamepad1.dpad_left){
+
+            if (gamepad1.left_stick_button)
+            {
                 if (powersetterr == 0.5){
                     powersetterr = 1.0;
                 }
@@ -77,15 +80,29 @@ public class driverthing extends LinearOpMode {
                     powersetterr = 0.5;
                 }
             }
-/*
-            if(gamepad1.dpad_left){
-                if (powersetter > 0.5){
-                    powersetter = 0.5;
+
+            while (gamepad1.left_trigger == 1.0)
+            {
+                if(E.getCurrentPosition()>10) {
+                    E.setTargetPosition(E.getCurrentPosition()-1);
+                    E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    E.setPower(0.75);
+                }else{
+                    E.setPower(0);
                 }
-                else{
-                    powersetter = 1;
+            }
+
+            while (gamepad1.right_trigger == 1.0)
+            {
+                if(E.getCurrentPosition()<2990) {
+                    E.setTargetPosition(E.getCurrentPosition()+1);
+                    E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    E.setPower(0.75);
+                }else{
+                    E.setPower(0);
                 }
-            }*/
+            }
+
             if(gamepad1.right_trigger > 0.5){ grabber.setPosition(.295);
             }
             if(gamepad1.left_trigger > 0.5){grabber.setPosition(0);}
