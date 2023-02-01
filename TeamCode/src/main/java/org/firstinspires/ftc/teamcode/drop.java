@@ -46,7 +46,7 @@ public class drop extends LinearOpMode {
                 robot.grabber.setPosition(0.550);
             }
             if (gamepad1.left_trigger > 0.5) {
-                robot.grabber.setPosition(.31);
+                robot.grabber.setPosition(.35);
             }
             if (gamepad1.b) {
                 robot.extend(0);

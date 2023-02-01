@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -26,6 +27,8 @@ public class driverthing extends LinearOpMode {
     public DcMotor br;
     public DcMotor E;
     public ColorSensor color_sensor;
+
+    boolean beans=true;
 
     @Override
     public void runOpMode() {
@@ -69,25 +72,33 @@ public class driverthing extends LinearOpMode {
         while (opModeIsActive()) {
 
             move();
-            if (gamepad1.dpad_left){
-                if (powersetterr == 0.5){
-                    powersetterr = 1.0;
-                }
-                if (powersetterr == 1.0){
+
+            if (gamepad1.left_stick_button)
+            {
+                if(beans){
                     powersetterr = 0.5;
                 }
+                beans=false;
+            }else {
+                powersetterr = 1;
+                beans = true;
             }
-/*
-            if(gamepad1.dpad_left){
-                if (powersetter > 0.5){
-                    powersetter = 0.5;
+
+            while (gamepad1.right_bumper)
+            {
+                if(E.getCurrentPosition()<2980) {
+                    E.setTargetPosition(E.getCurrentPosition()+5);
                 }
-                else{
-                    powersetter = 1;
-                }
-            }*/
-            if(gamepad1.right_trigger > 0.5){ grabber.setPosition(.295);
             }
+
+            while (gamepad1.left_bumper)
+            {
+                if(E.getCurrentPosition()>20) {
+                    E.setTargetPosition(E.getCurrentPosition()-5);
+                }
+            }
+
+            if(gamepad1.right_trigger > 0.5){ grabber.setPosition(.295);}
             if(gamepad1.left_trigger > 0.5){grabber.setPosition(0);}
             if(gamepad1.b){extend(0);}
             if(gamepad1.a){extend(1);}
@@ -120,7 +131,7 @@ public class driverthing extends LinearOpMode {
 
         switch (position) {
             case 0:
-                if(E.getCurrentPosition()>10) {
+                if(E.getCurrentPosition()>20) {
                     E.setTargetPosition(0);
                     E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     E.setPower(0.75);
