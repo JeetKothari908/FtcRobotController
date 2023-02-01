@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -17,7 +16,6 @@ public class driverthing extends LinearOpMode {
 
     // Declare OpMode members.
     private final ElapsedTime runtime = new ElapsedTime();
-
     public Servo grabber;
     double powersetterr = 1;
 
@@ -27,8 +25,6 @@ public class driverthing extends LinearOpMode {
     public DcMotor br;
     public DcMotor E;
     public ColorSensor color_sensor;
-
-    boolean beans=true;
 
     @Override
     public void runOpMode() {
@@ -58,7 +54,8 @@ public class driverthing extends LinearOpMode {
         fr.setDirection(DcMotor.Direction.FORWARD);
         bl.setDirection(DcMotor.Direction.REVERSE);
         br.setDirection(DcMotor.Direction.FORWARD);
-
+        abstraction abs = new abstraction(hardwareMap, gamepad1);
+        abs.defineAndStart();
         // runs the moment robot is initialized
         waitForStart();
         runtime.reset();
@@ -72,34 +69,29 @@ public class driverthing extends LinearOpMode {
         while (opModeIsActive()) {
 
             move();
-
-            if (gamepad1.left_stick_button)
-            {
-                if(beans){
+            if (gamepad1.dpad_left){
+                if (powersetterr == 0.5){
+                    powersetterr = 1.0;
+                }
+                if (powersetterr == 1.0){
                     powersetterr = 0.5;
                 }
-                beans=false;
-            }else {
-                powersetterr = 1;
-                beans = true;
             }
-
-            while (gamepad1.right_bumper)
-            {
-                if(E.getCurrentPosition()<2980) {
-                    E.setTargetPosition(E.getCurrentPosition()+5);
+/*
+            if(gamepad1.dpad_left){
+                if (powersetter > 0.5){
+                    powersetter = 0.5;
                 }
-            }
-
-            while (gamepad1.left_bumper)
-            {
-                if(E.getCurrentPosition()>20) {
-                    E.setTargetPosition(E.getCurrentPosition()-5);
+                else{
+                    powersetter = 1;
                 }
+            }*/
+            if(gamepad1.right_trigger > 0.5){ grabber.setPosition(.295);
             }
-
-            if(gamepad1.right_trigger > 0.5){ grabber.setPosition(.295);}
             if(gamepad1.left_trigger > 0.5){grabber.setPosition(0);}
+            if(gamepad1.right_bumper){ abs.jiggle_v2();
+            }
+            if(gamepad1.left_trigger > 0.5){abs.go = false;}
             if(gamepad1.b){extend(0);}
             if(gamepad1.a){extend(1);}
             if(gamepad1.x){extend(2);}
@@ -131,7 +123,7 @@ public class driverthing extends LinearOpMode {
 
         switch (position) {
             case 0:
-                if(E.getCurrentPosition()>20) {
+                if(E.getCurrentPosition()>10) {
                     E.setTargetPosition(0);
                     E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     E.setPower(0.75);
