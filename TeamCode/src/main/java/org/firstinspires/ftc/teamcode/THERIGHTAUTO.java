@@ -75,7 +75,7 @@ public class THERIGHTAUTO extends LinearOpMode {
             // now robot is at cone measuring location
             color = colortestor();
             telemetry.addData("color is ", color);
-            telemetry.update();io
+            telemetry.update();
             straferight(.22);
             // apt the robot is in the middle of the cone's square
 

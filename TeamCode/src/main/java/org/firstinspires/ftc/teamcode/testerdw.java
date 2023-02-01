@@ -9,42 +9,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="lefty", group="Autonomous")
-public class leftauto extends LinearOpMode {
+@Autonomous(name="tester", group="Autonomous")
+public class testerdw extends LinearOpMode {
 
-    // Declare OpMode members.
-//    private final ElapsedTime runtime = new ElapsedTime();
-
-
-
-    //               )\         O_._._._A_._._._O         /(
-    //                \`--.___,'=================`.___,--'/
-    //                 \`--._.__                 __._,--'/
-    //                   \  ,. l`~~~~~~~~~~~~~~~'l ,.  /
-    //       __            \||(_)!_!_!_.-._!_!_!(_)||/            __
-    //       \\`-.__        ||_|____!!_|;|_!!____|_||        __,-'//
-    //        \\    `==---='// Declare OpMode members.`=---=='    //
-    /*    /**/private final ElapsedTime runtime = new ElapsedTime();/**/
-    //         \  ,.`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',.  /
-    //           \||  ____,-------._,-------._,-------.____  ||/
-    //            ||\|___!`======="!`======="!`======="!___|/||
-    //            || |---||--------||-| | |-!!--------||---| ||
-    //  __O_____O_ll_lO_____O_____O|| |'|'| ||O_____O_____Ol_ll_O_____O__
-    //  o H o o H o o H o o H o o |-----------| o o H o o H o o H o o H o
-    // ___H_____H_____H_____H____O =========== O____H_____H_____H_____H___
-    //                          /|=============|\
-    //()______()______()______() '==== +-+ ====' ()______()______()______()
-    //||{_}{_}||{_}{_}||{_}{_}/| ===== |_| ===== |\{_}{_}||{_}{_}||{_}{_}||
-    //||      ||      ||     / |==== s(   )s ====| \     ||      ||      ||
-    //======================()  =================  ()======================
-    //----------------------/| ------------------- |\----------------------
-    //                     / |---------------------| \
-    //-'--'--'           ()  '---------------------'  ()
-    //                   /| ------------------------- |\    --'--'--'
-    //       --'--'     / |---------------------------| \    '--'
-    //                ()  |___________________________|  ()           '--'-
-    //  --'-          /| _______________________________  |\
-    // --'          / |__________________________________| \
+    private final ElapsedTime runtime = new ElapsedTime();
 
     public Servo grabber;
 
@@ -97,64 +65,8 @@ public class leftauto extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        /*for starting on the RIGHT.
-        set robot so the sensor is in line with the cone.
-        this should score a max of 26 points.
-        we push the signal cone around but thats allowed by the rules.
-        ALL DISTANCES MUST BE TESTED ON THE GAME FIELD BEFORE
-        MATCHES. Fields are standardized to +-1 inch.
-        */
-        //initial movement
-
         while(opModeIsActive()) {
-            closeclaw();
-            straferight(0.53);
-            sleep(1000);
-            color = colortestor();
-            telemetry.addData("color is ", color);
-            telemetry.update();
-            if (color.equals("turqoise")) {
-                //Moves to zone strafe
-                straferight(0.32);
-                sleep(1000);
-                movebackward(0.55);
-                sleep(1000);
-                straferight(0.24);
-                sleep(1000);
-                openclaw();
-                sleep(1000);
-                moveExtender(1);
-                sleep(1000);
-                moveforward(0.05);
-                sleep(1000);
-                openclaw();
-                sleep(1000);
-                movebackward(0.05);
-                sleep(1000);
-                moveExtender(0);
-            } else if (color.equals("yellow")) {
-                //moves to zone
-                straferight(0.53);
-                //drops cone
-                moveExtender(2);
-                moveforward(0.05);
-                closeclaw();
-                movebackward(0.05);
-                moveExtender(0);
-            } else {
-                //moves to zone
-                straferight(0.32);
-                moveforward(0.60);
-                straferight(0.24);
-                //drops cone
-                moveExtender(3);
-                moveforward(0.05);
-                openclaw();
-                movebackward(0.05);
-                moveExtender(0);
-            }
-//            sleep(1000);
-
+            moveforward(2);
             break;
         }
 
@@ -165,7 +77,7 @@ public class leftauto extends LinearOpMode {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setTargetPosition(position);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(1.0);
+        motor.setPower(.3);
     }
 
     void moveforward(double meters){
@@ -196,7 +108,7 @@ public class leftauto extends LinearOpMode {
         int position = (int) (meters * moveconstant)*-1;
 
         settargetpositioner(fl, position);
-        settargetpositioner(br, position);
+        settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
         while (fl.isBusy()){sleep(1);}
@@ -245,7 +157,7 @@ public class leftauto extends LinearOpMode {
 
 
     }
-    void turnright(int degrees){
+    void turnleft(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -262,7 +174,7 @@ public class leftauto extends LinearOpMode {
         br.setPower(0);
 
     }
-    void turnleft(int degrees){
+    void turnright(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -318,10 +230,10 @@ public class leftauto extends LinearOpMode {
         }
     }
     void openclaw(){
-        grabber.setPosition(.295);
+        grabber.setPosition(.35);
     }
     void closeclaw(){
-        grabber.setPosition(0.0);
+        grabber.setPosition(0.550);
     }
 
 }

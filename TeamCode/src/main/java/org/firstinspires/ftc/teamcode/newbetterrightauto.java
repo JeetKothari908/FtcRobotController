@@ -9,42 +9,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="right", group="Autonomous")
-public class rightauto extends LinearOpMode {
+@Autonomous(name="therightauto", group="Autonomous")
+public class newbetterrightauto extends LinearOpMode {
 
-    // Declare OpMode members.
-//    private final ElapsedTime runtime = new ElapsedTime();
-
-
-
-    //               )\         O_._._._A_._._._O         /(
-    //                \`--.___,'=================`.___,--'/
-    //                 \`--._.__                 __._,--'/
-    //                   \  ,. l`~~~~~~~~~~~~~~~'l ,.  /
-    //       __            \||(_)!_!_!_.-._!_!_!(_)||/            __
-    //       \\`-.__        ||_|____!!_|;|_!!____|_||        __,-'//
-    //        \\    `==---='// Declare OpMode members.`=---=='    //
-    /*    /**/private final ElapsedTime runtime = new ElapsedTime();/**/
-    //         \  ,.`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',.  /
-    //           \||  ____,-------._,-------._,-------.____  ||/
-    //            ||\|___!`======="!`======="!`======="!___|/||
-    //            || |---||--------||-| | |-!!--------||---| ||
-    //  __O_____O_ll_lO_____O_____O|| |'|'| ||O_____O_____Ol_ll_O_____O__
-    //  o H o o H o o H o o H o o |-----------| o o H o o H o o H o o H o
-    // ___H_____H_____H_____H____O =========== O____H_____H_____H_____H___
-    //                          /|=============|\
-    //()______()______()______() '==== +-+ ====' ()______()______()______()
-    //||{_}{_}||{_}{_}||{_}{_}/| ===== |_| ===== |\{_}{_}||{_}{_}||{_}{_}||
-    //||      ||      ||     / |==== s(   )s ====| \     ||      ||      ||
-    //======================()  =================  ()======================
-    //----------------------/| ------------------- |\----------------------
-    //                     / |---------------------| \
-    //-'--'--'           ()  '---------------------'  ()
-    //                   /| ------------------------- |\    --'--'--'
-    //       --'--'     / |---------------------------| \    '--'
-    //                ()  |___________________________|  ()           '--'-
-    //  --'-          /| _______________________________  |\
-    // --'          / |__________________________________| \
+    private final ElapsedTime runtime = new ElapsedTime();
 
     public Servo grabber;
 
@@ -97,53 +65,46 @@ public class rightauto extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        /*for starting on the RIGHT.
-        set robot so the sensor is in line with the cone.
-        this should score a max of 26 points.
-        we push the signal cone around but thats allowed by the rules.
-        ALL DISTANCES MUST BE TESTED ON THE GAME FIELD BEFORE
-        MATCHES. Fields are standardized to +-1 inch.
-        */
-        //initial movement
-
         while(opModeIsActive()) {
             closeclaw();
-
-            straferight(0.53);
-            color = colortestor();
-            straferight(.9);
-            moveforward(0.25);
-            moveExtender(3);
-            openclaw();
-            straferight(0.3);
-
-            strafeleft(0.3);
-
-            moveforward(1);
-            turnright(90);
-            straferight(1);
-            moveExtender(0);
-            closeclaw();
+            sleep(1000);
             moveExtender(1);
-            strafeleft(1.5);
-            turnleft(90);
-            straferight(0.2);
-            moveExtender(3);
+            straferight(1.41);
+            sleep(100);
+
+            // now robot is at cone measuring location
+            color = colortestor();
+            telemetry.addData("color is ", color);
+            telemetry.update();
+            straferight(.72);
+            // apt the robot is in the middle of the cone's square
+
+            moveExtender(3); // delivering cone
+            straferight(3);
+            sleep(300);
+            moveforward(.39);
+            sleep(300);
             openclaw();
-            if(color=="magenta"){
-                strafeleft(0.2);
-                movebackward(1);
-                strafeleft(1);
+            sleep(300);
+            closeclaw();
+            movebackward(.32);
+            moveExtender(1);
+            turnright(3);
+            sleep(300);
+            strafeleft(1.18);
+            // should be back at the place with the things
+            sleep(400);
+            if (color.equals("turqoise")) {
+                movebackward(.6);
+            } else if (color.equals("yellow")) {
+
+            } else {
+
+                moveforward(.6);
             }
-            else if(color=="yellow"){
-                moveforward(0.5);
-                strafeleft(1);
-            }
-            else if(color=="blue"){
-                moveforward(0.5);
-                strafeleft(1);
-                moveforward(1);
-            }
+            moveExtender(0);
+
+            sleep(10000);
             break;
         }
 
@@ -154,60 +115,60 @@ public class rightauto extends LinearOpMode {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setTargetPosition(position);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(.30);
+        motor.setPower(.3);
     }
 
-    void moveforward(double meters){
+    void moveforward(double feet){
 
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        int position = (int) (meters * moveconstant)*-1;
+        int position = (int) (feet * 0.3048 * moveconstant)*-1;
 
         settargetpositioner(fl, position);
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()|| fr.isBusy() || br.isBusy() || bl.isBusy()){sleep(1);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
     }
-    void movebackward(double meters){
+    void movebackward(double feet){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        int position = (int) (meters * moveconstant)*-1;
+        int position = (int) (feet * 0.3048 * moveconstant)*-1;
 
         settargetpositioner(fl, position);
-        settargetpositioner(br, position);
+        settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()|| fr.isBusy() || br.isBusy() || bl.isBusy()){sleep(1);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
 
     }
-    void strafeleft(double meters){
+    void strafeleft(double feet){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        int position = (int) (meters * strafeconstant)*-1;
+        int position = (int) (feet * 0.3048 * strafeconstant)*-1;
 
         settargetpositioner(fl, position);
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()|| fr.isBusy() || br.isBusy() || bl.isBusy()){sleep(1);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -215,18 +176,18 @@ public class rightauto extends LinearOpMode {
 
 
     }
-    void straferight(double meters){
+    void straferight(double feet){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        int position = (int) (meters * strafeconstant)*-1;
+        int position = (int) (feet * 0.3048 * strafeconstant)*-1;
         settargetpositioner(fl, position);
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()|| fr.isBusy() || br.isBusy() || bl.isBusy()){sleep(1);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -234,7 +195,7 @@ public class rightauto extends LinearOpMode {
 
 
     }
-    void turnright(int degrees){
+    void turnleft(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -244,14 +205,14 @@ public class rightauto extends LinearOpMode {
         settargetpositioner(bl, -position);
         settargetpositioner(br, position);
         settargetpositioner(fr, position);
-        while (fl.isBusy()|| fr.isBusy() || br.isBusy() || bl.isBusy()){sleep(1);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
 
     }
-    void turnleft(int degrees){
+    void turnright(int degrees){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -262,7 +223,7 @@ public class rightauto extends LinearOpMode {
         settargetpositioner(bl, position);
         settargetpositioner(br, -position);
         settargetpositioner(fr, -position);
-        while (fl.isBusy()|| fr.isBusy() || br.isBusy() || bl.isBusy()){sleep(1);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -307,10 +268,10 @@ public class rightauto extends LinearOpMode {
         }
     }
     void openclaw(){
-        grabber.setPosition(.295);
+        grabber.setPosition(.35);
     }
     void closeclaw(){
-        grabber.setPosition(0.0);
+        grabber.setPosition(0.550);
     }
 
 }
