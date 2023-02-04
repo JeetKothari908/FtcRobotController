@@ -67,33 +67,47 @@ public class newbetterrightauto extends LinearOpMode {
 
         while(opModeIsActive()) {
             closeclaw();
-            sleep(1000);
-            moveExtender(1);
-            straferight(1.41);
-            sleep(100);
+            sleep(25);
+            straferight(2.5);
 
             // now robot is at cone measuring location
             color = colortestor();
             telemetry.addData("color is ", color);
             telemetry.update();
-            straferight(.72);
             // apt the robot is in the middle of the cone's square
-
-            moveExtender(3); // delivering cone
-            straferight(3);
-            sleep(300);
-            moveforward(.39);
-            sleep(300);
+            moveforward(2);
+            straferight(2);
+            //drop cone off
+            moveforward(.3);
+            moveExtender(3);
             openclaw();
-            sleep(300);
+            movebackward(0.3);
+            moveExtender(0);
+            straferight(1);
+            movebackward(4);
+            strafeleft(0.25);
+            //pick up new cone
+            //move extender to new placement not measured yet will do later
+            openclaw();
+            turnleft(180);
+            moveforward(0.3);
             closeclaw();
-            movebackward(.32);
-            moveExtender(1);
-            turnright(3);
-            sleep(300);
-            strafeleft(1.18);
+            movebackward(0.3);
+            // move extender back
+            turnleft(180);
+            //should be back idk
+            straferight(0.25);
+            moveforward(4);
+            strafeleft(1);
+            //drop cone off
+            moveExtender(3);
+            moveforward(0.3);
+            openclaw();
+            movebackward(0.3);
+            moveExtender(0);
+            //strafeleft(1.18);
             // should be back at the place with the things
-            sleep(400);
+/*            sleep(400);
             if (color.equals("turqoise")) {
                 movebackward(.6);
             } else if (color.equals("yellow")) {
@@ -104,7 +118,7 @@ public class newbetterrightauto extends LinearOpMode {
             }
             moveExtender(0);
 
-            sleep(10000);
+            sleep(10000);*/
             break;
         }
 
