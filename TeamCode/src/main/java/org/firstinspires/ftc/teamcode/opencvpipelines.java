@@ -11,6 +11,7 @@ public class opencvpipelines extends OpenCvPipeline{
         @Override
         public Mat processFrame(Mat input) {
                 Mat c = input.clone();
+                telemetry.addData("opencv-pipline");
                 int pixelsCounter = 0;
                 ArrayList<ArrayList<ArrayList<Double>>> pixels = new ArrayList<>();
                 for (int i = 0; i < c.height(); i++) {
