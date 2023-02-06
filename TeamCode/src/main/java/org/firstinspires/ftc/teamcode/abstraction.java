@@ -40,7 +40,7 @@ public class abstraction {
 
     public HardwareMap hardwareMap;
     public Gamepad gamepad1;
-
+    public Telemetry telemetry;
     public boolean blockDriver=false; // bad if set to true under circumstances beyond nominal operation
 
     public abstraction(HardwareMap hard, Gamepad g){
@@ -53,24 +53,28 @@ public class abstraction {
     public void defineAndStart(){
 
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
-
+        telemetry.addData("webcam defined");
+        
         OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
-
+        telemetry.addData("camera defined");
+        
         detector = new opencvpipelines();
         camera.setPipeline(detector);
+        telemetry.addData("pipeline defined");
+        
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
+                telemetry.addData("opened");
                 camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                 telemetry.addData("starting stream")
             }
             @Override
             public void onError(int errorCode)
             {
-                /*
-                 * This will be called if the camera could not be opened
-                 */
+                telemetry.addData("error on stream");
             }
         });
 
