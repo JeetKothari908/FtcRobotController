@@ -68,19 +68,26 @@ public class newbetterrightauto extends LinearOpMode {
         while(opModeIsActive()) {
             closeclaw();
             sleep(25);
-            straferight(2.5);
-
+            straferight(17/12);
+            sleep(100);
             // now robot is at cone measuring location
             color = colortestor();
             telemetry.addData("color is ", color);
             telemetry.update();
+            straferight(1);
+            straferight(0.2);
+            strafeleft(0.2);
             // apt the robot is in the middle of the cone's square
             moveforward(2);
-            straferight(2);
+            straferight(1.145);
             //drop cone off
-            moveforward(.3);
+            sleep(300);
             moveExtender(3);
+            sleep(300);
+            moveforward(.385);
+            sleep(300);
             openclaw();
+            sleep(300);
             movebackward(0.3);
             moveExtender(0);
             straferight(1);
@@ -145,11 +152,13 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
+        sleep(100);
+
     }
     void movebackward(double feet){
         fl.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -163,11 +172,12 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
+        sleep(100);
 
     }
     void strafeleft(double feet){
@@ -182,11 +192,12 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
+        sleep(100);
 
 
     }
@@ -201,11 +212,12 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
+        sleep(100);
 
 
     }
@@ -219,11 +231,12 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(bl, -position);
         settargetpositioner(br, position);
         settargetpositioner(fr, position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy() || fr.isBusy() || br.isBusy() || bl.isBusy() ){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
+        sleep(100);
 
     }
     void turnright(int degrees){
@@ -237,11 +250,12 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(bl, position);
         settargetpositioner(br, -position);
         settargetpositioner(fr, -position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy() || fr.isBusy() || bl.isBusy() || br.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
+        sleep(100);
 
     }
     String colortestor() {
@@ -261,31 +275,61 @@ public class newbetterrightauto extends LinearOpMode {
             E.setTargetPosition(0);
             E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             E.setPower(1.0);
+
+            sleep(1000);
+
         }
         if (place == 1){
             E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             E.setTargetPosition(997);
             E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             E.setPower(1.0);
+            sleep(1000);
+
+/*            while(E.isBusy()){sleep(10);}
+            E.setPower(0);
+            sleep(100);*/
+
+
         }
         if (place == 2){
             E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             E.setTargetPosition(1944);
             E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             E.setPower(1.0);
+            sleep(1000);
+
+            /*while(E.isBusy()){sleep(10);}
+            E.setPower(0);
+            sleep(100);*/
+
+
         }
         if (place == 3) {
             E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             E.setTargetPosition(2990);
             E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             E.setPower(1.0);
+            sleep(1000);
+
+           /* while(E.isBusy()){sleep(10);}
+            E.setPower(0);
+            sleep(100);*/
+
+
         }
     }
     void openclaw(){
+
         grabber.setPosition(.35);
+        sleep(500);
+
+
     }
     void closeclaw(){
         grabber.setPosition(0.550);
+        sleep(500);
+
     }
 
 }
