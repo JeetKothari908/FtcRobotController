@@ -17,6 +17,7 @@ public class driverthing extends LinearOpMode {
     // Declare OpMode members.
     private final ElapsedTime runtime = new ElapsedTime();
     public Servo grabber;
+    public Telemetry telemetry;
     double powersetterr = 1;
 
     public DcMotor fl;
@@ -35,7 +36,7 @@ public class driverthing extends LinearOpMode {
         br= hardwareMap.get(DcMotor.class, "BR");
 
         E = hardwareMap.get(DcMotor.class, "E");
-
+        
         grabber = hardwareMap.get(Servo.class, "grab");
 
         fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
