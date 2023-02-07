@@ -26,7 +26,7 @@ public class newbetterrightauto extends LinearOpMode {
     public ColorSensor color_sensor;
     double moveconstant = 1783 * (2/2.05); //WORKS
     double motorrotation = 538; //WORKS
-    double turnconstant = 12.05; // per degree, so its rly small
+    double turnconstant = 11.3846625767; // per degree, so its rly small
     double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05); //untested, need to test
     String color = "";
 
@@ -75,8 +75,8 @@ public class newbetterrightauto extends LinearOpMode {
             telemetry.addData("color is ", color);
             telemetry.update();
             straferight(1);
-            straferight(0.2);
-            strafeleft(0.2);
+            straferight(0.4);
+            strafeleft(0.4);
             // apt the robot is in the middle of the cone's square
             moveforward(2);
             straferight(1.145);
@@ -91,16 +91,19 @@ public class newbetterrightauto extends LinearOpMode {
             movebackward(0.3);
             moveExtender(0);
             straferight(1);
-            movebackward(4);
-            strafeleft(0.25);
+            turnleft(186);
+
+            moveforward(4);
+         //   straferight(1);
             //pick up new cone
             //move extender to new placement not measured yet will do later
+            moveExtender(4);
             openclaw();
-            turnleft(180);
             moveforward(0.3);
             closeclaw();
+            moveExtender(3);
             movebackward(0.3);
-            // move extender back
+            moveExtender(0);
             turnleft(180);
             //should be back idk
             straferight(0.25);
@@ -311,14 +314,22 @@ public class newbetterrightauto extends LinearOpMode {
             E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             E.setPower(1.0);
             sleep(1000);
-
+        }
            /* while(E.isBusy()){sleep(10);}
             E.setPower(0);
             sleep(100);*/
+        if (place == 4){
+
+            E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            E.setTargetPosition(525);
+            E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            E.setPower(1.0);
+            sleep(1000);
+        }
 
 
         }
-    }
+
     void openclaw(){
 
         grabber.setPosition(.35);
