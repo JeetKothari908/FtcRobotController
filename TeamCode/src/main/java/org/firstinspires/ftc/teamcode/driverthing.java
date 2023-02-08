@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -10,6 +12,28 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.opencv.core.Mat;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvPipeline;
+import org.openftc.easyopencv.OpenCvWebcam;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import org.openftc.easyopencv.OpenCvInternalCamera;
 
 @TeleOp(name="driver", group="Driver OP")
 public class driverthing extends LinearOpMode {
@@ -26,8 +50,43 @@ public class driverthing extends LinearOpMode {
     public DcMotor E;
     public ColorSensor color_sensor;
 
+
+    static final int STREAM_WIDTH = 1920; // modify for your camera
+    static final int STREAM_HEIGHT = 1080; // modify for your camera
+    OpenCvWebcam webcam;
+    opencvpipelines pipeline;
+
+
+
+
+
     @Override
     public void runOpMode() {
+            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+            WebcamName webcamName = null;
+            webcamName = hardwareMap.get(WebcamName.class, "Webcam 1"); // put your camera's name here
+            webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+            pipeline = new opencvpipelines();
+            webcam.setPipeline(pipeline);
+            webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+            {
+                @Override
+                public void onOpened()
+                {
+                    webcam.startStreaming(STREAM_WIDTH, STREAM_HEIGHT, OpenCvCameraRotation.UPRIGHT);
+                }
+
+                @Override
+                public void onError(int errorCode) {
+                    telemetry.addData("Camera Failed","");
+                    telemetry.update();
+                }
+            });
+
+
+
+
+
 
         fl= hardwareMap.get(DcMotor.class, "FL");
         fr= hardwareMap.get(DcMotor.class, "FR");
@@ -64,11 +123,10 @@ public class driverthing extends LinearOpMode {
 
 
 
-
         while (opModeIsActive()) {
 
             move();
-            if (gamepad1.dpad_left){
+            if (gamepad1.left_stick_button){
                 if (powersetterr == 0.5){
                     powersetterr = 1.0;
                 }
@@ -85,6 +143,9 @@ public class driverthing extends LinearOpMode {
                     powersetter = 1;
                 }
             }*/
+            if(gamepad1.right_bumper){ jiggle_v2();
+            }
+            if(gamepad1.left_trigger > 0.5){go = false;}
             if(gamepad1.right_trigger > 0.5){ grabber.setPosition(.295);
             }
             if(gamepad1.left_trigger > 0.5){grabber.setPosition(0);}
@@ -162,6 +223,37 @@ public class driverthing extends LinearOpMode {
         bl.setPower((Range.clip((vertical - horizontal + turn), -1, 1))*powersetterr);
         br.setPower((Range.clip((vertical + horizontal - turn), -1, 1))*powersetterr);
     }
+    public class opencvpipelines extends OpenCvPipeline{
+        Mat mat = new Mat();
+        boolean thing = true;
+        ArrayList<ArrayList<ArrayList<Double>>> image;
+        @Override
+        public Mat processFrame(Mat input) {
+            Mat c = input.clone();
+            telemetry.addData("referenced", c);
+            int pixelsCounter = 0;
+            ArrayList<ArrayList<ArrayList<Double>>> pixels = new ArrayList<>();
+            for (int i = 0; i < c.height(); i++) {
+                ArrayList<ArrayList<Double> > t2 = new ArrayList<>();
+                for (int j = 0; j < c.width(); j++) {
+                    pixelsCounter++;
+                    ArrayList<Double> tmp = new ArrayList<>();
+                    tmp.add(c.get(i, j)[0]);
+                    tmp.add(c.get(i, j)[1]);
+                    tmp.add(c.get(i, j)[2]);
+                    t2.add(tmp);
+                }
+                pixels.add(t2);
+            }
+
+            return c;
+        }
+
+        public ArrayList<ArrayList<ArrayList<Double>>> get_pixels1(){
+            return image;
+        }
+    }
+
 
     void move(double X, double Y, double T, double U, double TU, double P){
         // make sure to set motor mode to RUN_TO_POSITION and give it power!
@@ -196,4 +288,98 @@ public class driverthing extends LinearOpMode {
         bl.setPower(0);
         br.setPower(0);
     }
+
+    public double mse( ArrayList<Double> rgb){
+        double[] yellow = {255,255,0};
+        double sum = 0;
+        for (int i = 0; i <rgb.size(); i++) sum += Math.pow(yellow[i] - rgb.get(i), 2);
+
+        return sum/3;
+
+    }
+    public boolean centered = false;
+    public boolean forward = false;
+    public boolean go = true;
+    public void jiggle_v2(){
+        while (!centered && go){
+            boolean l1 = center(pipeline.get_pixels1());
+            if (!centered) {
+                if (l1) {
+                    move(0, 0, 1, 0, 12.05, 1);
+                }
+                else {
+                    move(0, 0, -1, 0, 12.05, 1);
+                }
+            }
+        }
+        while (!forward && go){
+            boolean l1 = f(pipeline.get_pixels1());
+            if (!forward) {
+                if (l1) {
+                    move(0, 2, 0, 0, 12.05, 1);
+                }
+
+            }
+        }
+
+    }
+    public boolean center( ArrayList<ArrayList<ArrayList<Double>>>  array_of_pixels){
+        int line_num  = (int)array_of_pixels.size()/3;
+        ArrayList<ArrayList<Double>>  line_of_pixels = array_of_pixels.get(line_num);
+        int yellow_counter = 0;
+        int yellows = 0;
+        boolean prev_data = false;
+        int highest_num_yellow = 0;
+        for (int i = 0; i <line_of_pixels.size(); i++){
+            double j = mse(line_of_pixels.get(i));
+            if (j <= 500){
+                yellow_counter += 1;
+                prev_data = true;
+            }
+            else if(prev_data && highest_num_yellow <= yellow_counter){
+                highest_num_yellow = yellow_counter;
+                yellows = (int) (i - yellow_counter)/2;
+            }
+        }
+        if (yellows > line_of_pixels.size()/2){
+            return true;
+        }
+        else if (yellows ==line_of_pixels.size()/2) {
+            centered = true;
+        }
+
+        return false;
+
+
+
+    }
+    public boolean f( ArrayList<ArrayList<ArrayList<Double>>> array_of_pixels){
+        int line_num  = (int)array_of_pixels.size()/3;
+        ArrayList<ArrayList<Double>>  line_of_pixels = array_of_pixels.get(line_num);
+        int yellow_counter = 0;
+        int yellows = 0;
+        boolean prev_data = false;
+        int highest_num_yellow = 0;
+        for (int i = 0; i <line_of_pixels.size(); i++){
+            double j = mse(line_of_pixels.get(i));
+            if (j <= 30){
+                yellow_counter += 1;
+                prev_data = true;
+            }
+            else if(prev_data && highest_num_yellow <= yellow_counter){
+                highest_num_yellow = yellow_counter;
+                yellows = (int) (i - yellow_counter)/2;
+            }
+        }
+        if (yellow_counter == line_of_pixels.size()){
+            forward = true;
+            return true;
+
+        }
+        return false;
+
+
+
+    }
+
 }
