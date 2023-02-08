@@ -87,11 +87,10 @@ public class newbetterrightauto extends LinearOpMode {
             moveforward(.385);
             sleep(300);
             openclaw();
-            sleep(300);
             movebackward(0.3);
             moveExtender(0);
             straferight(1);
-            turnleft(186);
+            turnleft(189);
 
             moveforward(4);
          //   straferight(1);
@@ -175,7 +174,7 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(10);}
+        while (fl.isBusy()||fr.isBusy() || bl.isBusy() || br.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -195,7 +194,7 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(10);}
+        while (fl.isBusy()||fr.isBusy() || bl.isBusy() || br.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -215,7 +214,7 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(10);}
+        while (fl.isBusy()||fr.isBusy() || bl.isBusy() || br.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -234,7 +233,7 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(bl, -position);
         settargetpositioner(br, position);
         settargetpositioner(fr, position);
-        while (fl.isBusy() || fr.isBusy() || br.isBusy() || bl.isBusy() ){sleep(10);}
+        while (fl.isBusy()||fr.isBusy() || bl.isBusy() || br.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -253,7 +252,7 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(bl, position);
         settargetpositioner(br, -position);
         settargetpositioner(fr, -position);
-        while (fl.isBusy() || fr.isBusy() || bl.isBusy() || br.isBusy()){sleep(1);}
+        while (fl.isBusy()||fr.isBusy() || bl.isBusy() || br.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);

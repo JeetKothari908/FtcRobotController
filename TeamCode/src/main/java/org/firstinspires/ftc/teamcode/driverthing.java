@@ -149,19 +149,19 @@ public class driverthing extends LinearOpMode {
                 telemetry.addData("yellow", yellow1);
                 telemetry.addData("direction", direction);
             }
-            if(gamepad1.right_bumper){
+            if(gamepad1.dpad_up){
                 jiggle_v2();
             }
-            if(gamepad1.left_bumper){go = false;}
+            if(gamepad1.dpad_down){go = false;}
 
-            if(gamepad1.right_trigger > 0.5){ grabber.setPosition(.295);
+            if(gamepad1.left_trigger > 0.5){ grabber.setPosition(.35);
             }
-            if(gamepad1.left_trigger > 0.5){grabber.setPosition(0);}
+            if(gamepad1.right_trigger > 0.5){grabber.setPosition(.550);}
 
-        /*    if(gamepad1.b){extend(0);}
+            if(gamepad1.b){extend(0);}
             if(gamepad1.a){extend(1);}
             if(gamepad1.x){extend(2);}
-            if(gamepad1.y){extend(  3);}*/
+            if(gamepad1.y){extend(  3);}
             telemetry.addData("fl",fl.getPower());
             telemetry.addData("fr",fr.getPower());
             telemetry.addData("bl",bl.getPower());
@@ -226,10 +226,10 @@ public class driverthing extends LinearOpMode {
         double vertical = gamepad1.left_stick_y*.5;
         double turn = -gamepad1.right_stick_x*2/3;
         //  E.setPower(gamepad1.left_stick_y);
-        fl.setPower((Range.clip((vertical + horizontal + turn), -1, 1))*powersetterr);
-        fr.setPower((Range.clip((vertical - horizontal - turn), -1, 1))*powersetterr);
-        bl.setPower((Range.clip((vertical - horizontal + turn), -1, 1))*powersetterr);
-        br.setPower((Range.clip((vertical + horizontal - turn), -1, 1))*powersetterr);
+        fl.setPower((Range.clip((vertical + horizontal + turn), -1, 1))/**powersetterr*/);
+        fr.setPower((Range.clip((vertical - horizontal - turn), -1, 1))/**powersetterr*/);
+        bl.setPower((Range.clip((vertical - horizontal + turn), -1, 1))/**powersetterr*/);
+        br.setPower((Range.clip((vertical + horizontal - turn), -1, 1))/**powersetterr*/);
     }
     public class opencvpipelines extends OpenCvPipeline{
         Mat mat = new Mat();
@@ -328,15 +328,15 @@ public class driverthing extends LinearOpMode {
     public void jiggle_v2(){
         int  times_ran = 0;
         while (!centered && go){
-            int l1 = center(pipeline.get_pixels1());
+            //int l1 = center(pipeline.get_pixels1());
             times_ran += 1;
             if (!centered) {
-                if (l1) {
+             /*   if (l1) {
                     move(0, 0, 100/times_ran, 0, 12.05, 1);
-                }
-                else {
+                }*/
+           /*     else {
                     move(0, 0, -100/times_ran, 0, 12.05, 1);
-                }
+                }*/
             }
         }
         while (!forward && go){
@@ -370,7 +370,6 @@ public class driverthing extends LinearOpMode {
             }
         }
         int r = yellows - line_of_pixels.length/2;
-        if
         if (yellows > line_of_pixels.length/2 + 20){
             return true;
         }
