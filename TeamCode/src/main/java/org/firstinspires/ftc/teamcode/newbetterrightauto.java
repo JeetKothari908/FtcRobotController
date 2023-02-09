@@ -238,7 +238,6 @@ public class newbetterrightauto extends LinearOpMode {
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
-        sleep(100);
 
     }
     void turnright(int degrees){
@@ -257,7 +256,6 @@ public class newbetterrightauto extends LinearOpMode {
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
-        sleep(100);
 
     }
     String colortestor() {
