@@ -131,7 +131,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy()|| fr.isBusy() || bl.isBusy() || br.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -149,7 +149,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -168,7 +168,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -187,7 +187,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -205,7 +205,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(bl, -position);
         settargetpositioner(br, position);
         settargetpositioner(fr, position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -223,7 +223,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(bl, position);
         settargetpositioner(br, -position);
         settargetpositioner(fr, -position);
-        while (fl.isBusy()){sleep(1);}
+        while (fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
