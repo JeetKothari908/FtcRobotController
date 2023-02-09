@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="therightauto", group="Autonomous")
-public class newbetterrightauto extends LinearOpMode {
+@Autonomous(name="test", group="Autonomous")
+public class test extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
 
@@ -66,66 +66,7 @@ public class newbetterrightauto extends LinearOpMode {
         runtime.reset();
 
         while(opModeIsActive()) {
-            closeclaw();
-            moveExtender(1);
-            sleep(25);
-            straferight(17/12);
-            sleep(100);
-            // now robot is at cone measuring location
-            color = colortestor();
-            telemetry.addData("color is ", color);
-            telemetry.update();
-            straferight(1.4);
-            strafeleft(0.4);
-            // apt the robot is in the middle of the cone's square
-            moveforward(2);
-            straferight(1.145);
-            //drop cone off
-            moveExtender(3);
-            moveforward(.385);
-            openclaw();
-            movebackward(0.3);
-            moveExtender(0);
-            straferight(1);
-            turnleft(189);
-
-            moveforward(3.75);
-         //   straferight(1);
-            //pick up new cone
-            //move extender to new placement not measured yet will do later
-            moveExtender(4);
-            openclaw();
-            moveforward(0.3);
-            closeclaw();
-            moveExtender(5);
-
-            //after this point we are untested
-            movebackward(0.5);
-            turnright(189);
-            //should be back idk
-            straferight(0.25);
-            moveforward(4);
-            strafeleft(1);
-            //drop cone off
-            moveExtender(3);
-            moveforward(0.3);
-            openclaw();
-            movebackward(0.3);
-            moveExtender(0);
-            //strafeleft(1.18);
-            // should be back at the place with the things
-/*            sleep(400);
-            if (color.equals("turqoise")) {
-                movebackward(.6);
-            } else if (color.equals("yellow")) {
-
-            } else {
-
-                moveforward(.6);
-            }
-            moveExtender(0);
-
-            sleep(10000);*/
+           turnleft(378);
             break;
         }
 
@@ -334,7 +275,7 @@ public class newbetterrightauto extends LinearOpMode {
         }
 
 
-        }
+    }
 
     void openclaw(){
 
