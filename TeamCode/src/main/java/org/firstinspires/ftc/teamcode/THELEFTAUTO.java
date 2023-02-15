@@ -75,7 +75,7 @@ public class THELEFTAUTO extends LinearOpMode {
             color = colortestor();
             telemetry.addData("color is ", color);
             telemetry.update();
-            straferight(.22);
+            straferight(.26);
             // atp the robot is in the middle of the cone's square
 
             straferight(.1);
@@ -84,19 +84,21 @@ public class THELEFTAUTO extends LinearOpMode {
             sleep(100);
             turnright(185);
 
-            moveExtender(3); // delivering cone
+            moveExtender(3); // delive
+
             strafeleft(.90);
-//            sleep(300);
-//            moveforward(.12);
+            sleep(300);
+            moveforward(.12);
             sleep(300);
             openclaw();
             sleep(300);
             closeclaw();
             movebackward(.1);
-            moveExtender(1);
-            turnleft(3);
+            moveExtender(4);
+          //  turnleft(3);
             sleep(300);
-            straferight(.36);
+            straferight(.33);
+
             // should be back at the place with the things
             sleep(400);
             if (color.equals("turqoise")) {
@@ -105,7 +107,8 @@ public class THELEFTAUTO extends LinearOpMode {
 
             } else {
 
-                movebackward(.55);
+                movebackward(.58);
+                strafeleft(.03);
             }
             moveExtender(0);
 
@@ -271,12 +274,15 @@ public class THELEFTAUTO extends LinearOpMode {
             E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             E.setPower(1.0);
         }
+
     }
     void openclaw(){
         grabber.setPosition(.35);
+        sleep(400);
     }
     void closeclaw(){
         grabber.setPosition(0.550);
+        sleep(400);
     }
 
 }

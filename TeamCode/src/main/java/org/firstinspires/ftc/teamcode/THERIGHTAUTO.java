@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="THERIGHTAUTO", group="Autonomous")
+@Autonomous(name="USETHISRTIGHTAUTO", group="Autonomous")
 public class THERIGHTAUTO extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
@@ -76,7 +76,7 @@ public class THERIGHTAUTO extends LinearOpMode {
             color = colortestor();
             telemetry.addData("color is ", color);
             telemetry.update();
-            straferight(.22);
+            straferight(.24);
             // apt the robot is in the middle of the cone's square
 
             moveExtender(3); // delivering cone
@@ -131,7 +131,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()|| fr.isBusy() || bl.isBusy() || br.isBusy()){sleep(10);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -149,7 +149,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -168,7 +168,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -187,7 +187,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -205,7 +205,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(bl, -position);
         settargetpositioner(br, position);
         settargetpositioner(fr, position);
-        while (fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -223,7 +223,7 @@ public class THERIGHTAUTO extends LinearOpMode {
         settargetpositioner(bl, position);
         settargetpositioner(br, -position);
         settargetpositioner(fr, -position);
-        while (fl.isBusy()||fr.isBusy()||bl.isBusy()||br.isBusy()){sleep(10);}
+        while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
@@ -269,9 +269,11 @@ public class THERIGHTAUTO extends LinearOpMode {
     }
     void openclaw(){
         grabber.setPosition(.35);
+        sleep(400);
     }
     void closeclaw(){
         grabber.setPosition(0.550);
+        sleep(400);
     }
 
 }

@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="therightauto", group="Autonomous")
-public class newbetterrightauto extends LinearOpMode {
+@Autonomous(name="this", group="Autonomous")
+public class rightauto extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
 
@@ -26,7 +26,7 @@ public class newbetterrightauto extends LinearOpMode {
     public ColorSensor color_sensor;
     double moveconstant = 1783 * (2/2.05); //WORKS
     double motorrotation = 538; //WORKS
-    double turnconstant = 11.3846625767; // per degree, so its rly small
+    double turnconstant = 12.05; // per degree, so its rly small
     double strafeconstant = 1783* (1/0.84) * (1/1.08) * (1/0.95) * (2/2.05); //untested, need to test
     String color = "";
 
@@ -69,60 +69,65 @@ public class newbetterrightauto extends LinearOpMode {
             closeclaw();
             sleep(1000);
             moveExtender(1);
-            straferightmeters(0.43);
+            straferight(0.43);
             sleep(100);
 
             // now robot is at cone measuring location
             color = colortestor();
             telemetry.addData("color is ", color);
             telemetry.update();
-            straferightmeters(.22);
+            straferight(.24);
             // apt the robot is in the middle of the cone's square
-            moveforward(2);
-            straferight(1.145);
-            //drop cone off
-            moveExtender(3);
-            moveforward(.385);
-            openclaw();
 
-            turnleft(189);
-
-            moveforward(3.75);
-         //   straferight(1);
-            //pick up new cone
-            moveExtender(4);
+            moveExtender(3); // delivering cone
+            straferight(.93);
+            sleep(300);
+            moveforward(.12);
+            sleep(300);
             openclaw();
-            moveforward(0.3);
+            sleep(700);
             closeclaw();
-            moveExtender(5);
+            movebackward(.1);
+            moveExtender(4);
+            //put cycle code here
+            turnleft(183);
+            sleep(300);
+            straferight(.33);
 
-            //after this point we are untested
-            movebackward(0.5);
-            turnright(180);
-            //should be back idk
-            straferight(0.25);
-            moveforward(4);
-            strafeleft(1);
-            //drop cone off
-            moveExtender(3);
-            moveforward(0.3);
-            openclaw();
-            movebackward(0.3);
-            moveExtender(0);
-            //strafeleft(1.18);
             // should be back at the place with the things
-/*            sleep(400);
+            sleep(400);
+            turnleft(180);
+            openclaw();
+            moveforward(0.57);
+
+            closeclaw();
+            sleep(300);
+            moveExtender(3);
+            movebackward(0.5);
+            turnleft(180);
+            strafeleft(.36);
+            moveExtender(3);
+            moveforward(0.1);
+            openclaw();
+
+            movebackward(0.1);
+            sleep(300);
+            closeclaw();
+            moveExtender(1);
+            turnleft(3);
+            sleep(300);
+            straferight(.36);
             if (color.equals("turqoise")) {
                 movebackward(.6);
             } else if (color.equals("yellow")) {
 
             } else {
 
-                moveforward(.6);
+                moveforward(.65);
             }
             moveExtender(0);
 
-            sleep(10000);*/
+            sleep(10000);
             break;
         }
 
@@ -133,16 +138,18 @@ public class newbetterrightauto extends LinearOpMode {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setTargetPosition(position);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(.4);
+        motor.setPower(.3);
     }
 
-    void moveforward(double feet){
+    void moveforward(double meters){
 
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
-        int position = (int) (feet * 0.3048 * moveconstant)*-1;
+
+        int position = (int) (meters * moveconstant)*-1;
+
         settargetpositioner(fl, position);
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
@@ -152,8 +159,47 @@ public class newbetterrightauto extends LinearOpMode {
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
-        sleep(100);}
-    void straferightmeters(double meters){
+    }
+    void movebackward(double meters){
+        fl.setDirection(DcMotorSimple.Direction.FORWARD);
+        fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        bl.setDirection(DcMotorSimple.Direction.FORWARD);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        int position = (int) (meters * moveconstant)*-1;
+
+        settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+
+    }
+    void strafeleft(double meters){
+        fl.setDirection(DcMotorSimple.Direction.FORWARD);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        int position = (int) (meters * strafeconstant)*-1;
+
+        settargetpositioner(fl, position);
+        settargetpositioner(fr, position);
+        settargetpositioner(bl, position);
+        settargetpositioner(br, position);
+        while (fl.isBusy()){sleep(1);}
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+
+
+    }
+    void straferight(double meters){
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -164,64 +210,11 @@ public class newbetterrightauto extends LinearOpMode {
         settargetpositioner(fr, position);
         settargetpositioner(bl, position);
         settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(10);}
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);}
-    void movebackward(double feet){
-        fl.setDirection(DcMotorSimple.Direction.FORWARD);
-        fr.setDirection(DcMotorSimple.Direction.REVERSE);
-        bl.setDirection(DcMotorSimple.Direction.FORWARD);
-        br.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        int position = (int) (feet * 0.3048 * moveconstant)*-1;
-
-        settargetpositioner(fl, position);
-        settargetpositioner(fr, position);
-        settargetpositioner(bl, position);
-        settargetpositioner(br, position);
         while (fl.isBusy()){sleep(1);}
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
-        sleep(100);}
-    void strafeleft(double feet){
-        fl.setDirection(DcMotorSimple.Direction.FORWARD);
-        fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        int position = (int) (feet * 0.3048 * strafeconstant)*-1;
-
-        settargetpositioner(fl, position);
-        settargetpositioner(fr, position);
-        settargetpositioner(bl, position);
-        settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
-        sleep(100); }
-    void straferight(double feet){
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.REVERSE);
-        bl.setDirection(DcMotorSimple.Direction.FORWARD);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        int position = (int) (feet * 0.3048 * strafeconstant)*-1;
-        settargetpositioner(fl, position);
-        settargetpositioner(fr, position);
-        settargetpositioner(bl, position);
-        settargetpositioner(br, position);
-        while (fl.isBusy()){sleep(1);}
-        fl.setPower(0);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
-        sleep(100);
 
 
     }
@@ -277,46 +270,25 @@ public class newbetterrightauto extends LinearOpMode {
             E.setTargetPosition(0);
             E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             E.setPower(1.0);
-
-            sleep(1000);
-
         }
         if (place == 1){
             E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             E.setTargetPosition(997);
             E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             E.setPower(1.0);
-            sleep(1000);
-
-/*            while(E.isBusy()){sleep(10);}
-            E.setPower(0);
-            sleep(100);*/
-
-
         }
         if (place == 2){
             E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             E.setTargetPosition(1944);
             E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             E.setPower(1.0);
-            sleep(1000);
-
-            /*while(E.isBusy()){sleep(10);}
-            E.setPower(0);
-            sleep(100);*/
-
-
         }
         if (place == 3) {
             E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             E.setTargetPosition(2990);
             E.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             E.setPower(1.0);
-            sleep(1000);
         }
-           /* while(E.isBusy()){sleep(10);}
-            E.setPower(0);
-            sleep(100);*/
         if (place == 4){
 
             E.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -334,21 +306,14 @@ public class newbetterrightauto extends LinearOpMode {
             sleep(1000);
 
         }
-
-
-        }
-
+    }
     void openclaw(){
-
         grabber.setPosition(.35);
-        sleep(1000);
-
-
+        sleep(400);
     }
     void closeclaw(){
         grabber.setPosition(0.550);
-        sleep(1000);
-
+        sleep(400);
     }
 
 }
