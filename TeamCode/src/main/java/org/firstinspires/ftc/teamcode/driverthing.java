@@ -124,7 +124,7 @@ public class driverthing extends LinearOpMode {
 
 
 
-            if(gamepad1.left_trigger > 0.5){ grabber.setPosition(.35);
+            if(gamepad1.left_trigger > 0.5){ grabber.setPosition(.15);
             }
 
             if(gamepad1.left_bumper){

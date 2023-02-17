@@ -102,7 +102,7 @@ public class thing extends LinearOpMode {
                 grabber.setPosition(0.550);
                 sleep(400);}
             if(gamepad1.left_trigger > 0.5){
-                grabber.setPosition(.35);
+                grabber.setPosition(.15);
                 sleep(400);}
             if(gamepad1.b){extend(0);}
             if(gamepad1.a){extend(1);}

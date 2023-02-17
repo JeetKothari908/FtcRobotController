@@ -308,7 +308,7 @@ public class rightauto extends LinearOpMode {
         }
     }
     void openclaw(){
-        grabber.setPosition(.35);
+        grabber.setPosition(.15);
         sleep(400);
     }
     void closeclaw(){
