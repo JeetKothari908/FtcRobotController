@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="USETHISRTIGHTAUTO", group="Autonomous")
+@Autonomous(name="oldrightauto", group="Autonomous")
 public class THERIGHTAUTO extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();

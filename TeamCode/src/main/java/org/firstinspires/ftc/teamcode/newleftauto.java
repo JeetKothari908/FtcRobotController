@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="USETHISLEFTAUTO", group="Autonomous")
+@Autonomous(name="newleftuato", group="Autonomous")
 public class newleftauto extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
@@ -71,7 +71,7 @@ public class newleftauto extends LinearOpMode {
             sleep(100);
 
             // now robot is at cone measuring location
-            color = colortestor();
+            color = colortestor()
             telemetry.addData("color is ", color);
             telemetry.update();
             straferight(.26);

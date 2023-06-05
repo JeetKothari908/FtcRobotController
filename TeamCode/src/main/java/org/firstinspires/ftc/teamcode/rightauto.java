@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name="this", group="Autonomous")
+@Autonomous(name="newrightauto", group="Autonomous")
 public class rightauto extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
@@ -90,6 +90,8 @@ public class rightauto extends LinearOpMode {
             movebackward(.1);
             moveExtender(4);
             //put cycle code here
+            straferight(0.3);
+            strafeleft(0.3);
             turnleft(183);
             sleep(300);
             straferight(.33);
